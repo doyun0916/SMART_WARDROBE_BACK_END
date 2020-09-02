@@ -13,3 +13,4 @@ class EmailcheckSerializer(serializers.ModelSerializer):
         model = EmailCheck
         fields =('email',
                  'code')
+
