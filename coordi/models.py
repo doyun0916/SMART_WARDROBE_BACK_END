@@ -1,14 +1,149 @@
 from django.db import models
-from django.utils import timezone
 
-class Style(models.Model):
-    style = models.CharField(max_length=30)
+class Mancasual(models.Model):                 #place to preserve coordinates image
+    outer = models.CharField(max_length=30, null=True)
+    outercol = models.CharField(max_length=30, null=True)
+    top = models.CharField(max_length=30, null=True)
+    topcol = models.CharField(max_length=30, null=True)
+    bottom = models.CharField(max_length=30, null=True)
+    bottomcol = models.CharField(max_length=30, null=True)
+    imgurl = models.CharField(max_length=100)
 
-class Coordi(models.Model):                 #place to preserve coordinates image
-    # squence of coordi
-    outerthick = models.CharField(max_length=10),
-    outerthin = models.CharField(max_length=10),
-    toplong = models.CharField(max_length=10)
-    topshort = models.CharField(max_length=10),
-    bottomlong = models.CharField(max_length=10),
-    bottomshort = models.CharField(max_length=10)
+class Mancampus(models.Model):                 #place to preserve coordinates image
+    outer = models.CharField(max_length=30, null=True)
+    outercol = models.CharField(max_length=30, null=True)
+    top = models.CharField(max_length=30, null=True)
+    topcol = models.CharField(max_length=30, null=True)
+    bottom = models.CharField(max_length=30, null=True)
+    bottomcol = models.CharField(max_length=30, null=True)
+    imgurl = models.CharField(max_length=100)
+
+class Manminimal(models.Model):                 #place to preserve coordinates image
+    outer = models.CharField(max_length=30, null=True)
+    outercol = models.CharField(max_length=30, null=True)
+    top = models.CharField(max_length=30, null=True)
+    topcol = models.CharField(max_length=30, null=True)
+    bottom = models.CharField(max_length=30, null=True)
+    bottomcol = models.CharField(max_length=30, null=True)
+    imgurl = models.CharField(max_length=100)
+
+class Manstreet(models.Model):                 #place to preserve coordinates image
+    outer = models.CharField(max_length=30, null=True)
+    outercol = models.CharField(max_length=30, null=True)
+    top = models.CharField(max_length=30, null=True)
+    topcol = models.CharField(max_length=30, null=True)
+    bottom = models.CharField(max_length=30, null=True)
+    bottomcol = models.CharField(max_length=30, null=True)
+    imgurl = models.CharField(max_length=100)
+
+class Mantravel(models.Model):                 #place to preserve coordinates image
+    outer = models.CharField(max_length=30, null=True)
+    outercol = models.CharField(max_length=30, null=True)
+    top = models.CharField(max_length=30, null=True)
+    topcol = models.CharField(max_length=30, null=True)
+    bottom = models.CharField(max_length=30, null=True)
+    bottomcol = models.CharField(max_length=30, null=True)
+    imgurl = models.CharField(max_length=100)
+
+class Mansports(models.Model):                 #place to preserve coordinates image
+    outer = models.CharField(max_length=30, null=True)
+    outercol = models.CharField(max_length=30, null=True)
+    top = models.CharField(max_length=30, null=True)
+    topcol = models.CharField(max_length=30, null=True)
+    bottom = models.CharField(max_length=30, null=True)
+    bottomcol = models.CharField(max_length=30, null=True)
+    imgurl = models.CharField(max_length=100)
+
+class Manformal(models.Model):                 #place to preserve coordinates image
+    outer = models.CharField(max_length=30, null=True)
+    outercol = models.CharField(max_length=30, null=True)
+    top = models.CharField(max_length=30, null=True)
+    topcol = models.CharField(max_length=30, null=True)
+    bottom = models.CharField(max_length=30, null=True)
+    bottomcol = models.CharField(max_length=30, null=True)
+    imgurl = models.CharField(max_length=100)
+
+class Mandandy(models.Model):                 #place to preserve coordinates image
+    outer = models.CharField(max_length=30, null=True)
+    outercol = models.CharField(max_length=30, null=True)
+    top = models.CharField(max_length=30, null=True)
+    topcol = models.CharField(max_length=30, null=True)
+    bottom = models.CharField(max_length=30, null=True)
+    bottomcol = models.CharField(max_length=30, null=True)
+    imgurl = models.CharField(max_length=100)
+
+# Woman coordination
+class Wosports(models.Model):                 #place to preserve coordinates image
+    outer = models.CharField(max_length=30, null=True)
+    outercol = models.CharField(max_length=30, null=True)
+    top = models.CharField(max_length=30, null=True)
+    topcol = models.CharField(max_length=30, null=True)
+    bottom = models.CharField(max_length=30, null=True)
+    bottomcol = models.CharField(max_length=30, null=True)
+    imgurl = models.CharField(max_length=100)
+
+class Wocasual(models.Model):                 #place to preserve coordinates image
+    outer = models.CharField(max_length=30, null=True)
+    outercol = models.CharField(max_length=30, null=True)
+    top = models.CharField(max_length=30, null=True)
+    topcol = models.CharField(max_length=30, null=True)
+    bottom = models.CharField(max_length=30, null=True)
+    bottomcol = models.CharField(max_length=30, null=True)
+    imgurl = models.CharField(max_length=100)
+
+class Woformal(models.Model):                 #place to preserve coordinates image
+    outer = models.CharField(max_length=30, null=True)
+    outercol = models.CharField(max_length=30, null=True)
+    top = models.CharField(max_length=30, null=True)
+    topcol = models.CharField(max_length=30, null=True)
+    bottom = models.CharField(max_length=30, null=True)
+    bottomcol = models.CharField(max_length=30, null=True)
+    imgurl = models.CharField(max_length=100)
+
+class Woromantic(models.Model):                 #place to preserve coordinates image
+    outer = models.CharField(max_length=30, null=True)
+    outercol = models.CharField(max_length=30, null=True)
+    top = models.CharField(max_length=30, null=True)
+    topcol = models.CharField(max_length=30, null=True)
+    bottom = models.CharField(max_length=30, null=True)
+    bottomcol = models.CharField(max_length=30, null=True)
+    imgurl = models.CharField(max_length=100)
+
+class Wogirlish(models.Model):                 #place to preserve coordinates image
+    outer = models.CharField(max_length=30, null=True)
+    outercol = models.CharField(max_length=30, null=True)
+    top = models.CharField(max_length=30, null=True)
+    topcol = models.CharField(max_length=30, null=True)
+    bottom = models.CharField(max_length=30, null=True)
+    bottomcol = models.CharField(max_length=30, null=True)
+    imgurl = models.CharField(max_length=100)
+
+class Wostreet(models.Model):                 #place to preserve coordinates image
+    outer = models.CharField(max_length=30, null=True)
+    outercol = models.CharField(max_length=30, null=True)
+    top = models.CharField(max_length=30, null=True)
+    topcol = models.CharField(max_length=30, null=True)
+    bottom = models.CharField(max_length=30, null=True)
+    bottomcol = models.CharField(max_length=30, null=True)
+    imgurl = models.CharField(max_length=100)
+
+class Wofeminine(models.Model):                 #place to preserve coordinates image
+    outer = models.CharField(max_length=30, null=True)
+    outercol = models.CharField(max_length=30, null=True)
+    top = models.CharField(max_length=30, null=True)
+    topcol = models.CharField(max_length=30, null=True)
+    bottom = models.CharField(max_length=30, null=True)
+    bottomcol = models.CharField(max_length=30, null=True)
+    imgurl = models.CharField(max_length=100)
+
+class Wotravel(models.Model):                 #place to preserve coordinates image
+    outer = models.CharField(max_length=30, null=True)
+    outercol = models.CharField(max_length=30, null=True)
+    top = models.CharField(max_length=30, null=True)
+    topcol = models.CharField(max_length=30, null=True)
+    bottom = models.CharField(max_length=30, null=True)
+    bottomcol = models.CharField(max_length=30, null=True)
+    imgurl = models.CharField(max_length=100)
+
+
+
