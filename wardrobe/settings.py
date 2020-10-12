@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'coordi.apps.CoordiConfig',
     'clothes.apps.ClothesConfig',
     'corsheaders',
+    'django_extensions',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
