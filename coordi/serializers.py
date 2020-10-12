@@ -105,6 +105,35 @@ class MdandySerializer(serializers.ModelSerializer):
                   'dresscol',
                   'imgurl')
 
+class MuniqueSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Manunique
+        fields = ('outer',
+                  'outercol',
+                  'top',
+                  'topcol',
+                  'bottom',
+                  'bottomcol',
+                  'dress',
+                  'dresscol',
+                  'imgurl')
+
+class MworkwearSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Manworkwear
+        fields = ('outer',
+                  'outercol',
+                  'top',
+                  'topcol',
+                  'bottom',
+                  'bottomcol',
+                  'dress',
+                  'dresscol',
+                  'imgurl')
+
+# woman styles
+
+
 class WsportsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Wosports
@@ -199,6 +228,71 @@ class WfeminineSerializer(serializers.ModelSerializer):
 class WtravelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Wotravel
+        fields = ('outer',
+                  'outercol',
+                  'top',
+                  'topcol',
+                  'bottom',
+                  'bottomcol',
+                  'dress',
+                  'dresscol',
+                  'imgurl')
+
+class WcampusSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Wocampus
+        fields = ('outer',
+                  'outercol',
+                  'top',
+                  'topcol',
+                  'bottom',
+                  'bottomcol',
+                  'dress',
+                  'dresscol',
+                  'imgurl')
+
+class WuniqueSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Wounique
+        fields = ('outer',
+                  'outercol',
+                  'top',
+                  'topcol',
+                  'bottom',
+                  'bottomcol',
+                  'dress',
+                  'dresscol',
+                  'imgurl')
+
+class WworkwearSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Woworkwear
+        fields = ('outer',
+                  'outercol',
+                  'top',
+                  'topcol',
+                  'bottom',
+                  'bottomcol',
+                  'dress',
+                  'dresscol',
+                  'imgurl')
+
+class WminimalSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Wominimal
+        fields = ('outer',
+                  'outercol',
+                  'top',
+                  'topcol',
+                  'bottom',
+                  'bottomcol',
+                  'dress',
+                  'dresscol',
+                  'imgurl')
+
+class WdandySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Wodandy
         fields = ('outer',
                   'outercol',
                   'top',

@@ -8,6 +8,7 @@ class OuterThick(models.Model):
     category = models.CharField(max_length=70)
     url = models.CharField(max_length=70)
     descript = models.CharField(max_length=70, null=True)
+    brand = models.CharField(max_length=70, null=True)
     email = models.ForeignKey(Account, on_delete=models.CASCADE)
 
 class OuterThin(models.Model):
@@ -16,6 +17,7 @@ class OuterThin(models.Model):
     category = models.CharField(max_length=70)
     url = models.CharField(max_length=70)
     descript = models.CharField(max_length=70,  null=True)
+    brand = models.CharField(max_length=70, null=True)
     email = models.ForeignKey(Account, on_delete=models.CASCADE)
 
 class TopLong(models.Model):
@@ -24,6 +26,7 @@ class TopLong(models.Model):
     category = models.CharField(max_length=70)
     url = models.CharField(max_length=70)
     descript = models.CharField(max_length=70, null=True)
+    brand = models.CharField(max_length=70, null=True)
     email = models.ForeignKey(Account, on_delete=models.CASCADE)
 
 class TopShort(models.Model):
@@ -32,6 +35,7 @@ class TopShort(models.Model):
     category = models.CharField(max_length=70)
     url = models.CharField(max_length=70)
     descript = models.CharField(max_length=70, null=True)
+    brand = models.CharField(max_length=70, null=True)
     email = models.ForeignKey(Account, on_delete=models.CASCADE)
 
 class BottomLong(models.Model):
@@ -40,6 +44,7 @@ class BottomLong(models.Model):
     category = models.CharField(max_length=70)
     url = models.CharField(max_length=70)
     descript = models.CharField(max_length=70, null=True)
+    brand = models.CharField(max_length=70, null=True)
     email = models.ForeignKey(Account, on_delete=models.CASCADE)
 
 class BottomShort(models.Model):
@@ -48,6 +53,7 @@ class BottomShort(models.Model):
     category = models.CharField(max_length=70)
     url = models.CharField(max_length=70)
     descript = models.CharField(max_length=70, null=True)
+    brand = models.CharField(max_length=70, null=True)
     email = models.ForeignKey(Account, on_delete=models.CASCADE)
 
 class Dress(models.Model):
@@ -56,6 +62,7 @@ class Dress(models.Model):
     category = models.CharField(max_length=70)
     url = models.CharField(max_length=70)
     descript = models.CharField(max_length=70, null=True)
+    brand = models.CharField(max_length=70, null=True)
     email = models.ForeignKey(Account, on_delete=models.CASCADE)
 
 # Create your models here.

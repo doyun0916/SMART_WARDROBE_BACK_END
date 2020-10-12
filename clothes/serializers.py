@@ -9,6 +9,7 @@ class OuterThickSerializer(serializers.ModelSerializer):
                   'category',
                   'url',
                   'descript',
+                  'brand',
                   'email')
 
 class OuterThinSerializer(serializers.ModelSerializer):
@@ -19,6 +20,7 @@ class OuterThinSerializer(serializers.ModelSerializer):
                   'category',
                   'url',
                   'descript',
+                  'brand',
                   'email')
 
 class TopLongSerializer(serializers.ModelSerializer):
@@ -29,6 +31,7 @@ class TopLongSerializer(serializers.ModelSerializer):
                   'category',
                   'url',
                   'descript',
+                  'brand',
                   'email')
 
 class TopShortSerializer(serializers.ModelSerializer):
@@ -39,6 +42,7 @@ class TopShortSerializer(serializers.ModelSerializer):
                   'category',
                   'url',
                   'descript',
+                  'brand',
                   'email')
 
 class BottomLongSerializer(serializers.ModelSerializer):
@@ -49,6 +53,7 @@ class BottomLongSerializer(serializers.ModelSerializer):
                   'category',
                   'url',
                   'descript',
+                  'brand',
                   'email')
 
 class BottomShortSerializer(serializers.ModelSerializer):
@@ -59,6 +64,7 @@ class BottomShortSerializer(serializers.ModelSerializer):
                   'category',
                   'url',
                   'descript',
+                  'brand',
                   'email')
 
 class DressSerializer(serializers.ModelSerializer):
@@ -69,5 +75,6 @@ class DressSerializer(serializers.ModelSerializer):
                   'category',
                   'url',
                   'descript',
+                  'brand',
                   'email')
 

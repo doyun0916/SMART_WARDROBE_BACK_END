@@ -88,7 +88,40 @@ class Mandandy(models.Model):                 #place to preserve coordinates ima
     dresscol = models.CharField(max_length=30, null=True)
     imgurl = models.CharField(max_length=100)
 
+class Manunique(models.Model):                 #place to preserve coordinates image
+    outer = models.CharField(max_length=30, null=True)
+    outercol = models.CharField(max_length=30, null=True)
+    top = models.CharField(max_length=30, null=True)
+    topcol = models.CharField(max_length=30, null=True)
+    bottom = models.CharField(max_length=30, null=True)
+    bottomcol = models.CharField(max_length=30, null=True)
+    dress = models.CharField(max_length=30, null=True)
+    dresscol = models.CharField(max_length=30, null=True)
+    imgurl = models.CharField(max_length=100)
+
+class Manworkwear(models.Model):                 #place to preserve coordinates image
+    outer = models.CharField(max_length=30, null=True)
+    outercol = models.CharField(max_length=30, null=True)
+    top = models.CharField(max_length=30, null=True)
+    topcol = models.CharField(max_length=30, null=True)
+    bottom = models.CharField(max_length=30, null=True)
+    bottomcol = models.CharField(max_length=30, null=True)
+    dress = models.CharField(max_length=30, null=True)
+    dresscol = models.CharField(max_length=30, null=True)
+    imgurl = models.CharField(max_length=100)
+
 # Woman coordination
+class Wocampus(models.Model):                 #place to preserve coordinates image
+    outer = models.CharField(max_length=30, null=True)
+    outercol = models.CharField(max_length=30, null=True)
+    top = models.CharField(max_length=30, null=True)
+    topcol = models.CharField(max_length=30, null=True)
+    bottom = models.CharField(max_length=30, null=True)
+    bottomcol = models.CharField(max_length=30, null=True)
+    dress = models.CharField(max_length=30, null=True)
+    dresscol = models.CharField(max_length=30, null=True)
+    imgurl = models.CharField(max_length=100)
+
 class Wosports(models.Model):                 #place to preserve coordinates image
     outer = models.CharField(max_length=30, null=True)
     outercol = models.CharField(max_length=30, null=True)
@@ -177,5 +210,47 @@ class Wotravel(models.Model):                 #place to preserve coordinates ima
     dresscol = models.CharField(max_length=30, null=True)
     imgurl = models.CharField(max_length=100)
 
+class Wounique(models.Model):                 #place to preserve coordinates image
+    outer = models.CharField(max_length=30, null=True)
+    outercol = models.CharField(max_length=30, null=True)
+    top = models.CharField(max_length=30, null=True)
+    topcol = models.CharField(max_length=30, null=True)
+    bottom = models.CharField(max_length=30, null=True)
+    bottomcol = models.CharField(max_length=30, null=True)
+    dress = models.CharField(max_length=30, null=True)
+    dresscol = models.CharField(max_length=30, null=True)
+    imgurl = models.CharField(max_length=100)
 
+class Woworkwear(models.Model):                 #place to preserve coordinates image
+    outer = models.CharField(max_length=30, null=True)
+    outercol = models.CharField(max_length=30, null=True)
+    top = models.CharField(max_length=30, null=True)
+    topcol = models.CharField(max_length=30, null=True)
+    bottom = models.CharField(max_length=30, null=True)
+    bottomcol = models.CharField(max_length=30, null=True)
+    dress = models.CharField(max_length=30, null=True)
+    dresscol = models.CharField(max_length=30, null=True)
+    imgurl = models.CharField(max_length=100)
+
+class Wominimal(models.Model):                 #place to preserve coordinates image
+    outer = models.CharField(max_length=30, null=True)
+    outercol = models.CharField(max_length=30, null=True)
+    top = models.CharField(max_length=30, null=True)
+    topcol = models.CharField(max_length=30, null=True)
+    bottom = models.CharField(max_length=30, null=True)
+    bottomcol = models.CharField(max_length=30, null=True)
+    dress = models.CharField(max_length=30, null=True)
+    dresscol = models.CharField(max_length=30, null=True)
+    imgurl = models.CharField(max_length=100)
+
+class Wodandy(models.Model):                 #place to preserve coordinates image
+    outer = models.CharField(max_length=30, null=True)
+    outercol = models.CharField(max_length=30, null=True)
+    top = models.CharField(max_length=30, null=True)
+    topcol = models.CharField(max_length=30, null=True)
+    bottom = models.CharField(max_length=30, null=True)
+    bottomcol = models.CharField(max_length=30, null=True)
+    dress = models.CharField(max_length=30, null=True)
+    dresscol = models.CharField(max_length=30, null=True)
+    imgurl = models.CharField(max_length=100)
 
