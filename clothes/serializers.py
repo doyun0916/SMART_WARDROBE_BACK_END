@@ -4,9 +4,10 @@ from clothes.models import OuterThick, OuterThin, TopLong, TopShort, BottomLong,
 class OuterThickSerializer(serializers.ModelSerializer):
     class Meta:
         model = OuterThick
-        fields = ('name',
+        fields = ('id',
+                  'name',
                   'color',
-                  'category',
+                  'subcategory',
                   'url',
                   'descript',
                   'brand',
@@ -15,9 +16,10 @@ class OuterThickSerializer(serializers.ModelSerializer):
 class OuterThinSerializer(serializers.ModelSerializer):
     class Meta:
         model = OuterThin
-        fields = ('name',
+        fields = ('id',
+                  'name',
                   'color',
-                  'category',
+                  'subcategory',
                   'url',
                   'descript',
                   'brand',
@@ -26,9 +28,10 @@ class OuterThinSerializer(serializers.ModelSerializer):
 class TopLongSerializer(serializers.ModelSerializer):
     class Meta:
         model = TopLong
-        fields = ('name',
+        fields = ('id',
+                  'name',
                   'color',
-                  'category',
+                  'subcategory',
                   'url',
                   'descript',
                   'brand',
@@ -37,9 +40,10 @@ class TopLongSerializer(serializers.ModelSerializer):
 class TopShortSerializer(serializers.ModelSerializer):
     class Meta:
         model = TopShort
-        fields = ('name',
+        fields = ('id',
+                  'name',
                   'color',
-                  'category',
+                  'subcategory',
                   'url',
                   'descript',
                   'brand',
@@ -48,9 +52,10 @@ class TopShortSerializer(serializers.ModelSerializer):
 class BottomLongSerializer(serializers.ModelSerializer):
     class Meta:
         model = BottomLong
-        fields = ('name',
+        fields = ('id',
+                  'name',
                   'color',
-                  'category',
+                  'subcategory',
                   'url',
                   'descript',
                   'brand',
@@ -59,9 +64,10 @@ class BottomLongSerializer(serializers.ModelSerializer):
 class BottomShortSerializer(serializers.ModelSerializer):
     class Meta:
         model = BottomShort
-        fields = ('name',
+        fields = ('id',
+                  'name',
                   'color',
-                  'category',
+                  'subcategory',
                   'url',
                   'descript',
                   'brand',
@@ -70,9 +76,10 @@ class BottomShortSerializer(serializers.ModelSerializer):
 class DressSerializer(serializers.ModelSerializer):
     class Meta:
         model = Dress
-        fields = ('name',
+        fields = ('id',
+                  'name',
                   'color',
-                  'category',
+                  'subcategory',
                   'url',
                   'descript',
                   'brand',

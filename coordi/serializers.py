@@ -12,7 +12,7 @@ class McasualSerializer(serializers.ModelSerializer):
                   'bottomcol',
                   'dress',
                   'dresscol',
-                  'imgurl')
+                  'url')
 
 class McampusSerializer(serializers.ModelSerializer):
     class Meta:
@@ -25,7 +25,7 @@ class McampusSerializer(serializers.ModelSerializer):
                   'bottomcol',
                   'dress',
                   'dresscol',
-                  'imgurl')
+                  'url')
 
 class MminimalSerializer(serializers.ModelSerializer):
     class Meta:
@@ -38,7 +38,7 @@ class MminimalSerializer(serializers.ModelSerializer):
                   'bottomcol',
                   'dress',
                   'dresscol',
-                  'imgurl')
+                  'url')
 
 class MstreetSerializer(serializers.ModelSerializer):
     class Meta:
@@ -51,7 +51,7 @@ class MstreetSerializer(serializers.ModelSerializer):
                   'bottomcol',
                   'dress',
                   'dresscol',
-                  'imgurl')
+                  'url')
 
 class MtravelSerializer(serializers.ModelSerializer):
     class Meta:
@@ -64,7 +64,7 @@ class MtravelSerializer(serializers.ModelSerializer):
                   'bottomcol',
                   'dress',
                   'dresscol',
-                  'imgurl')
+                  'url')
 
 class MsportsSerializer(serializers.ModelSerializer):
     class Meta:
@@ -77,7 +77,7 @@ class MsportsSerializer(serializers.ModelSerializer):
                   'bottomcol',
                   'dress',
                   'dresscol',
-                  'imgurl')
+                  'url')
 
 class MformalSerializer(serializers.ModelSerializer):
     class Meta:
@@ -90,7 +90,7 @@ class MformalSerializer(serializers.ModelSerializer):
                   'bottomcol',
                   'dress',
                   'dresscol',
-                  'imgurl')
+                  'url')
 
 class MdandySerializer(serializers.ModelSerializer):
     class Meta:
@@ -103,7 +103,7 @@ class MdandySerializer(serializers.ModelSerializer):
                   'bottomcol',
                   'dress',
                   'dresscol',
-                  'imgurl')
+                  'url')
 
 class MuniqueSerializer(serializers.ModelSerializer):
     class Meta:
@@ -116,7 +116,7 @@ class MuniqueSerializer(serializers.ModelSerializer):
                   'bottomcol',
                   'dress',
                   'dresscol',
-                  'imgurl')
+                  'url')
 
 class MworkwearSerializer(serializers.ModelSerializer):
     class Meta:
@@ -129,7 +129,7 @@ class MworkwearSerializer(serializers.ModelSerializer):
                   'bottomcol',
                   'dress',
                   'dresscol',
-                  'imgurl')
+                  'url')
 
 # woman styles
 
@@ -145,7 +145,7 @@ class WsportsSerializer(serializers.ModelSerializer):
                   'bottomcol',
                   'dress',
                   'dresscol',
-                  'imgurl')
+                  'url')
 
 class WcasualSerializer(serializers.ModelSerializer):
     class Meta:
@@ -158,7 +158,7 @@ class WcasualSerializer(serializers.ModelSerializer):
                   'bottomcol',
                   'dress',
                   'dresscol',
-                  'imgurl')
+                  'url')
 
 class WformalSerializer(serializers.ModelSerializer):
     class Meta:
@@ -171,7 +171,7 @@ class WformalSerializer(serializers.ModelSerializer):
                   'bottomcol',
                   'dress',
                   'dresscol',
-                  'imgurl')
+                  'url')
 
 class WromanticSerializer(serializers.ModelSerializer):
     class Meta:
@@ -184,7 +184,7 @@ class WromanticSerializer(serializers.ModelSerializer):
                   'bottomcol',
                   'dress',
                   'dresscol',
-                  'imgurl')
+                  'url')
 
 class WgirlishSerializer(serializers.ModelSerializer):
     class Meta:
@@ -197,7 +197,7 @@ class WgirlishSerializer(serializers.ModelSerializer):
                   'bottomcol',
                   'dress',
                   'dresscol',
-                  'imgurl')
+                  'url')
 
 class WstreetSerializer(serializers.ModelSerializer):
     class Meta:
@@ -210,7 +210,7 @@ class WstreetSerializer(serializers.ModelSerializer):
                   'bottomcol',
                   'dress',
                   'dresscol',
-                  'imgurl')
+                  'url')
 
 class WfeminineSerializer(serializers.ModelSerializer):
     class Meta:
@@ -223,7 +223,7 @@ class WfeminineSerializer(serializers.ModelSerializer):
                   'bottomcol',
                   'dress',
                   'dresscol',
-                  'imgurl')
+                  'url')
 
 class WtravelSerializer(serializers.ModelSerializer):
     class Meta:
@@ -236,7 +236,7 @@ class WtravelSerializer(serializers.ModelSerializer):
                   'bottomcol',
                   'dress',
                   'dresscol',
-                  'imgurl')
+                  'url')
 
 class WcampusSerializer(serializers.ModelSerializer):
     class Meta:
@@ -249,7 +249,7 @@ class WcampusSerializer(serializers.ModelSerializer):
                   'bottomcol',
                   'dress',
                   'dresscol',
-                  'imgurl')
+                  'url')
 
 class WuniqueSerializer(serializers.ModelSerializer):
     class Meta:
@@ -262,7 +262,7 @@ class WuniqueSerializer(serializers.ModelSerializer):
                   'bottomcol',
                   'dress',
                   'dresscol',
-                  'imgurl')
+                  'url')
 
 class WworkwearSerializer(serializers.ModelSerializer):
     class Meta:
@@ -275,7 +275,7 @@ class WworkwearSerializer(serializers.ModelSerializer):
                   'bottomcol',
                   'dress',
                   'dresscol',
-                  'imgurl')
+                  'url')
 
 class WminimalSerializer(serializers.ModelSerializer):
     class Meta:
@@ -288,7 +288,7 @@ class WminimalSerializer(serializers.ModelSerializer):
                   'bottomcol',
                   'dress',
                   'dresscol',
-                  'imgurl')
+                  'url')
 
 class WdandySerializer(serializers.ModelSerializer):
     class Meta:
@@ -301,5 +301,5 @@ class WdandySerializer(serializers.ModelSerializer):
                   'bottomcol',
                   'dress',
                   'dresscol',
-                  'imgurl')
+                  'url')
 

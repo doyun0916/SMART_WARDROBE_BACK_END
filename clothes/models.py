@@ -5,7 +5,7 @@ from restApi.models import Account
 class OuterThick(models.Model):
     name = models.CharField(max_length=70)
     color = models.CharField(max_length=70)
-    category = models.CharField(max_length=70)
+    subcategory = models.CharField(max_length=70)
     url = models.CharField(max_length=70)
     descript = models.CharField(max_length=70, null=True)
     brand = models.CharField(max_length=70, null=True)
@@ -14,7 +14,7 @@ class OuterThick(models.Model):
 class OuterThin(models.Model):
     name = models.CharField(max_length=70)
     color = models.CharField(max_length=70)
-    category = models.CharField(max_length=70)
+    subcategory = models.CharField(max_length=70)
     url = models.CharField(max_length=70)
     descript = models.CharField(max_length=70,  null=True)
     brand = models.CharField(max_length=70, null=True)
@@ -23,7 +23,7 @@ class OuterThin(models.Model):
 class TopLong(models.Model):
     name = models.CharField(max_length=70)
     color = models.CharField(max_length=70)
-    category = models.CharField(max_length=70)
+    subcategory = models.CharField(max_length=70)
     url = models.CharField(max_length=70)
     descript = models.CharField(max_length=70, null=True)
     brand = models.CharField(max_length=70, null=True)
@@ -32,7 +32,7 @@ class TopLong(models.Model):
 class TopShort(models.Model):
     name = models.CharField(max_length=70)
     color = models.CharField(max_length=70)
-    category = models.CharField(max_length=70)
+    subcategory = models.CharField(max_length=70)
     url = models.CharField(max_length=70)
     descript = models.CharField(max_length=70, null=True)
     brand = models.CharField(max_length=70, null=True)
@@ -41,7 +41,7 @@ class TopShort(models.Model):
 class BottomLong(models.Model):
     name = models.CharField(max_length=70)
     color = models.CharField(max_length=70)
-    category = models.CharField(max_length=70)
+    subcategory = models.CharField(max_length=70)
     url = models.CharField(max_length=70)
     descript = models.CharField(max_length=70, null=True)
     brand = models.CharField(max_length=70, null=True)
@@ -50,7 +50,7 @@ class BottomLong(models.Model):
 class BottomShort(models.Model):
     name = models.CharField(max_length=70)
     color = models.CharField(max_length=70)
-    category = models.CharField(max_length=70)
+    subcategory = models.CharField(max_length=70)
     url = models.CharField(max_length=70)
     descript = models.CharField(max_length=70, null=True)
     brand = models.CharField(max_length=70, null=True)
@@ -59,7 +59,7 @@ class BottomShort(models.Model):
 class Dress(models.Model):
     name = models.CharField(max_length=70)
     color = models.CharField(max_length=70)
-    category = models.CharField(max_length=70)
+    subcategory = models.CharField(max_length=70)
     url = models.CharField(max_length=70)
     descript = models.CharField(max_length=70, null=True)
     brand = models.CharField(max_length=70, null=True)
