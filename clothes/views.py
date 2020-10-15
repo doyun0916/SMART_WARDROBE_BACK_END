@@ -15,8 +15,10 @@ from django.utils import timezone
 
 
 othick = ['coat', 'coat fur', 'parka']
-tlong = ['long blouse', 'long shirt', 'long tee', 'hoodie', 'sweater', 'turtleneck', 'long dress']
-bshort = ['short skirt', 'romper', 'denim shorts', 'shorts']
+tlong = ['long blouse', 'long shirt', 'long tee', 'hoodie', 'sweater', 'turtleneck']
+bshort = ['short skirt', 'denim shorts', 'shorts']
+delcheck = ['token', 'id', 'category', 'subcategory']
+upcheck = ['token', 'id', 'name', 'brand', 'color', 'url', 'category', 'subcategory', 'categoryNew', 'subcategoryNew', 'descript']
 
 @api_view(['POST'])
 def item_insert(request):
@@ -83,6 +85,14 @@ def item_insert(request):
                     return JsonResponse({'status': 'true'})
                 else:
                     return JsonResponse({'status': 'false', 'message': blong_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+        
+        if item_info['category'] == 'onepiece':
+            dress_serializer = DressSerializer(data=item_info)
+            if dress_serializer.is_valid():
+                dress_serializer.save()
+                return JsonResponse({'status': 'true'})
+            else:
+                return JsonResponse({'status': 'false', 'message': dress_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
     else:
         return JsonResponse({'status': 'false', 'message': check.errors}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -102,64 +112,69 @@ def item_get(request):
         comment['token'] = ["user not present"]
         return JsonResponse({'status':'false', 'message': comment}, status=status.HTTP_400_BAD_REQUEST)
     
-    try:
-        outerthickdb = OuterThick.objects.filter(email=session.email)
-        othick = OuterThickSerializer(outerthickdb, many=True)
+    outerthickdb = OuterThick.objects.filter(email=session.email)
+    othick = OuterThickSerializer(outerthickdb, many=True)
+    if not bool(othick.data):
+        outer['outerthick'] = {}
+    else:
         othick.data[0].pop('email')
         outer['outerthick'] = othick.data
-    except OuterThick.DoesNotExist:
-        outer['outerthick'] = {}
     
-    try:
-        outerthindb = OuterThin.objects.filter(email=session.email)
-        othin = OuterThinSerializer(outerthindb, many=True)
+    outerthindb = OuterThin.objects.filter(email=session.email)
+    othin = OuterThinSerializer(outerthindb, many=True)
+    if not bool(othin.data):
+        outer['outerthin'] = {}
+    else:
         othin.data[0].pop('email')
         outer['outerthin'] = othin.data
-    except OuterThin.DoesNotExist:
-        outer['outerthin'] = {} 
     result['outer'] = outer
     
-    try:
-        toplongdb = TopLong.objects.filter(email=session.email)
-        tlong = TopLongSerializer(toplongdb, many=True)
+
+
+
+    toplongdb = TopLong.objects.filter(email=session.email)
+    tlong = TopLongSerializer(toplongdb, many=True)
+    if not bool(tlong.data):
+        top['toplong'] = {}
+    else:
         tlong.data[0].pop('email')
         top['toplong'] = tlong.data
-    except TopLong.DoesNotExist:
-        top['toplong'] = {}
-    
-    try:
-        topshortdb = TopShort.objects.filter(email=session.email)
-        tshort = TopShortSerializer(topshortdb, many=True)
+
+    topshortdb = TopShort.objects.filter(email=session.email)
+    tshort = TopShortSerializer(topshortdb, many=True)
+    if not bool(tshort.data):
+        top['topshort'] = {}
+    else:
         tshort.data[0].pop('email')
         top['topshort'] = tshort.data
-    except TopShort.DoesNotExist:
-        top['topshort'] = {}
     result['top'] = top
-    
-    try:
-        bottomlongdb = BottomLong.objects.filter(email=session.email)
-        blong = BottomLongSerializer(bottomlongdb, many=True)
+
+
+
+    bottomlongdb = BottomLong.objects.filter(email=session.email)
+    blong = BottomLongSerializer(bottomlongdb, many=True)
+    if not bool(blong.data):
+        bottom['bottomlong'] = {}
+    else:
         blong.data[0].pop('email')
         bottom['bottomlong'] = blong.data
-    except BottomLong.DoesNotExist:
-        bottom['bottomlong'] = {}
-    
-    try:
-        bottomshortdb = BottomShort.objects.filter(email=session.email)
-        bshort = BottomShortSerializer(bottomshortdb, many=True)
+  
+    bottomshortdb = BottomShort.objects.filter(email=session.email)
+    bshort = BottomShortSerializer(bottomshortdb, many=True) 
+    if not bool(bshort.data):
+        bottom['bottomshort'] = {}
+    else:
         bshort.data[0].pop('email')
         bottom['bottomshort'] = bshort.data
-    except BottomShort.DoesNotExist:
-        bottom['bottomshort'] = {} 
     result['bottom'] = bottom
-    
-    try:
-        dressdb = Dress.objects.filter(email=session.email)
-        dre = DressSerializer(dressdb, many=True) 
+
+    dressdb = Dress.objects.filter(email=session.email)
+    dre = DressSerializer(dressdb, many=True)
+    if not bool(dre.data):
+        dress['dress'] = {}
+    else:
         dre.data[0].pop('email')
         dress['dress'] = dre.data
-    except Dress.DoesNotExist:
-        dress['dress'] = {}
     result['dress'] = dress
     return JsonResponse({'status':'true', 'items': result}, safe=False)
 
@@ -169,60 +184,400 @@ def item_get(request):
 def item_update(request):
     item_info = JSONParser().parse(request)
     comment = {}
+    for i in range(len(upcheck)):
+        if upcheck[i] not in item_info:
+            comment[upcheck[i]] = ["This field is required"]
+            return JsonResponse({'status':'false', 'message': comment}, status=status.HTTP_400_BAD_REQUEST)
+
     try:
         session = Token.objects.get(token=item_info['token'])
     except Token.DoesNotExist:
             comment['token'] = ["user not present"]
             return JsonResponse({'status':'false', 'message': comment}, status=status.HTTP_400_BAD_REQUEST)
+    
     item_info['email'] = item_info.pop('token')
     item_info['email'] = session.email
-    try:
-        items = item_info['category'].objects.filter(id=item_info['num'], email=session.email)
-    except item_info['category'].DoesNotExist:
-        comment['email'] = ["account with this email does not exists."]
-        return JsonResponse({'status':'false', 'message': comment}, status=status.HTTP_400_BAD_REQUEST)
-    #items.name = item_info['name']
-    #items.brand = item_info['brand']
-    #items.color = item_info['color']
-    #items.descript = item_info['descript']
+    
+    def replace(x, y):
+        x.name = y['name']
+        x.brand = y['brand']
+        x.color = y['color']
+        x.descript = y['descript']
+        x.save()
+        return JsonResponse({'status': 'true'}, status=status.HTTP_204_NO_CONTENT)
+
+    def outerinsert(x, sel, y):
+        if x in sel:
+            othick_serializer = OuterThickSerializer(data=y)
+            if othick_serializer.is_valid():
+                othick_serializer.save()
+                return JsonResponse({'status': 'true'}, status=status.HTTP_204_NO_CONTENT)
+            else:
+                return JsonResponse({'status': 'false', 'message': othick_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            othin_serializer = OuterThinSerializer(data=y)
+            if othin_serializer.is_valid():
+                othin_serializer.save()
+                return JsonResponse({'status': 'true'}, status=status.HTTP_204_NO_CONTENT)
+            else:
+                return JsonResponse({'status': 'false', 'message': othin_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+    def topinsert(x, sel, y):
+        if x in sel:
+            tlong_serializer = TopLongSerializer(data=y)
+            if tlong_serializer.is_valid():
+                tlong_serializer.save()
+                return JsonResponse({'status': 'true'}, status=status.HTTP_204_NO_CONTENT)
+            else:
+                return JsonResponse({'status': 'false', 'message': tlong_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            tshort_serializer = TopShortSerializer(data=y)
+            if tshort_serializer.is_valid():
+                tshort_serializer.save()
+                return JsonResponse({'status': 'true'}, status=status.HTTP_204_NO_CONTENT)
+            else:
+                return JsonResponse({'status': 'false', 'message': tshort_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+    
+    def bottominsert(x, sel,  y):
+        if x in sel:
+            bshort_serializer = BottomShortSerializer(data=y)
+            if bshort_serializer.is_valid():
+                bshort_serializer.save()
+                return JsonResponse({'status': 'true'}, status=status.HTTP_204_NO_CONTENT)
+            else:
+                return JsonResponse({'status': 'false', 'message': bshort_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            blong_serializer = BottomLongSerializer(data=y)
+            if blong_serializer.is_valid():
+                blong_serializer.save()
+                return JsonResponse({'status': 'true'}, status=status.HTTP_204_NO_CONTENT)
+            else:
+                return JsonResponse({'status': 'false', 'message': blong_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+    def onepieceinsert(y):
+        dress_serializer = DressSerializer(data=y)
+        if dress_serializer.is_valid():
+            dress_serializer.save()
+            return JsonResponse({'status': 'true'}, status=status.HTTP_204_NO_CONTENT)
+        else:
+            return JsonResponse({'status': 'false', 'message': dress_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+
     if item_info['category'] == 'outer':
         if item_info['subcategory'] in othick:
-            othick_serializer = OuterThickSerializer(data=item_info)
-            insert(othick_serializer)
+            try:
+                items = OuterThick.objects.get(id=item_info['id'], email=session.email)
+            except OuterThick.DoesNotExist:
+                comment['id'] = ["item not present"]
+                return JsonResponse({'status':'false', 'message': comment}, status=status.HTTP_400_BAD_REQUEST)
+                
+            if item_info['category'] != item_info['categoryNew']:
+                items.delete()
+                if item_info['categoryNew'] == 'outer':
+                    item_info['subcategory'] = item_info['subcategoryNew']
+                    return outerinsert(item_info['subcategory'], othick, item_info)
+                if item_info['categoryNew'] == 'top':
+                    item_info['subcategory'] = item_info['subcategoryNew']
+                    return topinsert(item_info['subcategory'], tlong, item_info)
+                if item_info['categoryNew'] == 'bottom':
+                    item_info['subcategory'] = item_info['subcategoryNew']
+                    return bottominsert(item_info['subcategory'], bshort, item_info)
+                if item_info['categoryNew'] == 'onepiece':
+                    item_info['subcategory'] = item_info['subcategoryNew']
+                    return onepieceinsert(item_info)
+                
+            if item_info['subcategory'] == item_info['subcategoryNew']:
+                return replace(items, item_info)
+            
+            elif item_info['subcategory'] != item_info['subcategoryNew']:
+                if item_info['subcategoryNew'] in othick:
+                    items.subcategory = item_info['subcategoryNew']
+                    return replace(items, item_info)
+                else:
+                    items.delete()
+                    item_info['subcategory'] = item_info['subcategoryNew']
+                    return outerinsert(item_info['subcategory'], othick, item_info)
         else:
-            othin_serializer = OuterThinSerializer(data=item_info)
-            insert(othin_serializer)
-    if item_info['category'] == 'top':
+            try:
+                items = OuterThin.objects.get(id=item_info['id'], email=session.email)
+            except OuterThin.DoesNotExist:
+                comment['id'] = ["item not present"]
+                return JsonResponse({'status':'false', 'message': comment}, status=status.HTTP_400_BAD_REQUEST)            
+            
+            if item_info['category'] != item_info['categoryNew']:
+                items.delete()
+                if item_info['categoryNew'] == 'outer':
+                    item_info['subcategory'] = item_info['subcategoryNew']
+                    return outerinsert(item_info['subcategory'], othick, item_info)
+                if item_info['categoryNew'] == 'top':
+                    item_info['subcategory'] = item_info['subcategoryNew']
+                    return topinsert(item_info['subcategory'], tlong, item_info)
+                if item_info['categoryNew'] == 'bottom':
+                    item_info['subcategory'] = item_info['subcategoryNew']
+                    return bottominsert(item_info['subcategory'], bshort, item_info)
+                if item_info['categoryNew'] == 'onepiece':
+                    item_info['subcategory'] = item_info['subcategoryNew']
+                    return onepieceinsert(item_info)
+
+            if item_info['subcategory'] == item_info['subcategoryNew']:
+                return replace(items, item_info)
+            elif item_info['subcategory'] != item_info['subcategoryNew']:
+                if item_info['subcategoryNew'] in othick:
+                    items.delete()
+                    item_info['subcategory'] = item_info['subcategoryNew']
+                    return outerinsert(items_info['subcategory'], othick, item_info)
+                else:
+                    items.subcategory = item_info['subcategoryNew']
+                    return replace(items, item_info)
+
+
+    elif item_info['category'] == 'top':
         if item_info['subcategory'] in tlong:
-            tlong_serializer = TopLongSerializer(data=item_info)
-            insert(tlong_serializer)
+            try:
+                items = TopLong.objects.get(id=item_info['id'], email=session.email)
+            except TopLong.DoesNotExist:
+                comment['id'] = ["item not present"]
+                return JsonResponse({'status':'false', 'message': comment}, status=status.HTTP_400_BAD_REQUEST)
+            
+            if item_info['category'] != item_info['categoryNew']:
+                items.delete()
+                if item_info['categoryNew'] == 'outer':
+                    item_info['subcategory'] = item_info['subcategoryNew']
+                    return outerinsert(item_info['subcategory'], othick, item_info)
+                if item_info['categoryNew'] == 'top':
+                    item_info['subcategory'] = item_info['subcategoryNew']
+                    return topinsert(item_info['subcategory'], tlong, item_info)
+                if item_info['categoryNew'] == 'bottom':
+                    item_info['subcategory'] = item_info['subcategoryNew']
+                    return bottominsert(item_info['subcategory'], bshort, item_info)
+                if item_info['categoryNew'] == 'onepiece':
+                    item_info['subcategory'] = item_info['subcategoryNew']
+                    return onepieceinsert(item_info)
+
+            if item_info['subcategory'] == item_info['subcategoryNew']:
+                return replace(items, item_info)
+
+            elif item_info['subcategory'] != item_info['subcategoryNew']:
+                if item_info['subcategoryNew'] in tlong:
+                    items.subcategory = item_info['subcategoryNew']
+                    return replace(items, item_info)
+                else:
+                    items.delete()
+                    item_info['subcategory'] = item_info['subcategoryNew']
+                    return topinsert(item_info['subcategory'], tlong, item_info)    
+            
         else:
-            tshort_serializer = TopShortSerializer(data=item_info)
-            insert(tshort_serializer)
-    if item_info['category'] == 'bottom':
+            try:
+                items = TopShort.objects.get(id=item_info['id'], email=session.email)
+            except TopShort.DoesNotExist:
+                comment['id'] = ["item not present"]
+                return JsonResponse({'status':'false', 'message': comment}, status=status.HTTP_400_BAD_REQUEST)
+           
+            if item_info['category'] != item_info['categoryNew']:
+                items.delete()
+                if item_info['categoryNew'] == 'outer':
+                    item_info['subcategory'] = item_info['subcategoryNew']
+                    return outerinsert(item_info['subcategory'], othick, item_info)
+                if item_info['categoryNew'] == 'top':
+                    item_info['subcategory'] = item_info['subcategoryNew']
+                    return topinsert(item_info['subcategory'], tlong, item_info)
+                if item_info['categoryNew'] == 'bottom':
+                    item_info['subcategory'] = item_info['subcategoryNew']
+                    return bottominsert(item_info['subcategory'], bshort, item_info)
+                if item_info['categoryNew'] == 'onepiece':
+                    item_info['subcategory'] = item_info['subcategoryNew']
+                    return onepieceinsert(item_info)
+
+            if item_info['subcategory'] == item_info['subcategoryNew']:
+                return replace(items, item_info)
+
+            elif item_info['subcategory'] != item_info['subcategoryNew']:
+                if item_info['subcategoryNew'] in tlong:
+                    items.delete()
+                    item_info['subcategory'] = item_info['subcategoryNew']
+                    return topinsert(item_info['subcategory'], tlong, item_info)
+                else:
+                    items.subcategory = item_info['subcategoryNew']
+                    return replace(items, item_info)
+
+
+    elif item_info['category'] == 'bottom':
         if item_info['subcategory'] in bshort:
-            bshort_serializer = BottomShortSerializer(data=item_info)
-            insert(bshort_serializer)
+            try:
+                items = BottomShort.objects.get(id=item_info['id'], email=session.email)
+            except BottomShort.DoesNotExist:
+                comment['id'] = ["item not present"]
+                return JsonResponse({'status':'false', 'message': comment}, status=status.HTTP_400_BAD_REQUEST)
+
+            if item_info['category'] != item_info['categoryNew']:
+                items.delete()
+                if item_info['categoryNew'] == 'outer':
+                    item_info['subcategory'] = item_info['subcategoryNew']
+                    return outerinsert(item_info['subcategory'], othick, item_info)
+                if item_info['categoryNew'] == 'top':
+                    item_info['subcategory'] = item_info['subcategoryNew']
+                    return topinsert(item_info['subcategory'], tlong, item_info)
+                if item_info['categoryNew'] == 'bottom':
+                    item_info['subcategory'] = item_info['subcategoryNew']
+                    return bottominsert(item_info['subcategory'], bshort, item_info)
+                if item_info['categoryNew'] == 'onepiece':
+                    item_info['subcategory'] = item_info['subcategoryNew']
+                    return onepieceinsert(item_info)
+
+            if item_info['subcategory'] == item_info['subcategoryNew']:
+                return replace(items, item_info)
+
+            elif item_info['subcategory'] != item_info['subcategoryNew']:
+                if item_info['subcategoryNew'] in bshort:
+                    items.subcategory = item_info['subcategoryNew']
+                    return replace(items, item_info)
+                else:
+                    items.delete()
+                    item_info['subcategory'] = item_info['subcategoryNew']
+                    return bottominsert(item_info['subcategory'], bshort, item_info)
+
+            
         else:
-            blong_serializer = BottomLongSerializer(data=item_info)
-            insert(blong_serializer)
+            try:
+                items = BottomLong.objects.get(id=item_info['id'], email=session.email)
+            except BottomLong.DoesNotExist:
+                comment['id'] = ["item not present"]
+                return JsonResponse({'status':'false', 'message': comment}, status=status.HTTP_400_BAD_REQUEST)
+            
+            if item_info['category'] != item_info['categoryNew']:
+                items.delete()
+                if item_info['categoryNew'] == 'outer':
+                    item_info['subcategory'] = item_info['subcategoryNew']
+                    return outerinsert(item_info['subcategory'], othick, item_info)
+                if item_info['categoryNew'] == 'top':
+                    item_info['subcategory'] = item_info['subcategoryNew']
+                    return topinsert(item_info['subcategory'], tlong, item_info)
+                if item_info['categoryNew'] == 'bottom':
+                    item_info['subcategory'] = item_info['subcategoryNew']
+                    return bottominsert(item_info['subcategory'], bshort, item_info)
+                if item_info['categoryNew'] == 'onepiece':
+                    item_info['subcategory'] = item_info['subcategoryNew']
+                    return onepieceinsert(item_info)
+
+            if item_info['subcategory'] == item_info['subcategoryNew']:
+                return replace(items, item_info)
+
+            elif item_info['subcategory'] != item_info['subcategoryNew']:
+                if item_info['subcategoryNew'] in bshort:
+                    items.delete()
+                    item_info['subcategory'] = item_info['subcategoryNew']
+                    return bottominsert(item_info['subcategory'], bshort, item_info)
+                else:
+                    items.subcategory = item_info['subcategoryNew']
+                    return replace(items, item_info)
+
+    elif item_info['category'] == 'onepiece':
+        try:
+            items = Dress.objects.get(id=item_info['id'], email=session.email)
+        except Dress.DoesNotExist:
+            comment['id'] = ["item not present"]
+            return JsonResponse({'status':'false', 'message': comment}, status=status.HTTP_400_BAD_REQUEST)
+        
+        if item_info['category'] != item_info['categoryNew']:
+            items.delete()
+            if item_info['categoryNew'] == 'outer':
+                item_info['subcategory'] = item_info['subcategoryNew']
+                return outerinsert(item_info['subcategory'], othick, item_info)
+            if item_info['categoryNew'] == 'top':
+                item_info['subcategory'] = item_info['subcategoryNew']
+                return topinsert(item_info['subcategory'], tlong, item_info)
+            if item_info['categoryNew'] == 'bottom':
+                item_info['subcategory'] = item_info['subcategoryNew']
+                return bottominsert(item_info['subcategory'], bshort, item_info)
+            if item_info['categoryNew'] == 'onepiece':
+                item_info['subcategory'] = item_info['subcategoryNew']
+                return onepieceinsert(item_info)
+
+        else:
+            items.subcategory = item_info['subcategoryNew']
+            return replace(items, item_info)
+    
+    else:
+        comment['category'] = ["Wrong category name"]
+        return JsonResponse({'status':'false', 'message': comment}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['DELETE'])          # num, category, token
 def item_delete(request):
     item_info = JSONParser().parse(request)
     comment = {}
+    for i in range(len(delcheck)):
+        if delcheck[i] not in item_info:
+            comment[delcheck[i]] = ["This field is required"]
+            return JsonResponse({'status':'false', 'message': comment}, status=status.HTTP_400_BAD_REQUEST)
+
     try:
         session = Token.objects.get(token=item_info['token'])
     except Token.DoesNotExist:
             comment['token'] = ["user not present"]
             return JsonResponse({'status':'false', 'message': comment}, status=status.HTTP_400_BAD_REQUEST)
-    try:
-        items = item_info['category'].objects.filter(id=item_info['num'], email=session.email)
-    except item_info['category'].DoesNotExist:
-        comment['email'] = ["account with this email does not exists."]
-        return JsonResponse({'status':'false', 'message': comment}, status=status.HTTP_400_BAD_REQUEST)
-    items.delete()
-    return JsonResponse({'status':'true'}, status=status.HTTP_204_NO_CONTENT)
 
+    if item_info['category'] == 'outer':
+        if item_info['subcategory'] in othick:
+            try:
+                items = OuterThick.objects.filter(id=item_info['id'], email=session.email)
+            except OuterThick.DoesNotExist:
+                comment['id'] = ["item not present"]
+                return JsonResponse({'status':'false', 'message': comment}, status=status.HTTP_400_BAD_REQUEST)
+            items.delete()
+            return JsonResponse({'status':'true'}, status=status.HTTP_204_NO_CONTENT)
+        else:
+            try:
+                items = OuterThin.objects.filter(id=item_info['id'], email=session.email)
+            except OuterThin.DoesNotExist:
+                comment['id'] = ["item not present"]
+                return JsonResponse({'status':'false', 'message': comment}, status=status.HTTP_400_BAD_REQUEST)
+            items.delete()
+            return JsonResponse({'status':'true'}, status=status.HTTP_204_NO_CONTENT)
 
+ 
+    if item_info['category'] == 'top':
+        if item_info['subcategory'] in tlong:
+            try:
+                items = TopLong.objects.filter(id=item_info['id'], email=session.email)
+            except TopLong.DoesNotExist:
+                comment['id'] = ["item not present"]
+                return JsonResponse({'status':'false', 'message': comment}, status=status.HTTP_400_BAD_REQUEST)
+            items.delete()
+            return JsonResponse({'status':'true'}, status=status.HTTP_204_NO_CONTENT)
+        else:
+            try:
+                items = TopShort.objects.filter(id=item_info['id'], email=session.email)
+            except TopShort.DoesNotExist:
+                comment['id'] = ["item not present"]
+                return JsonResponse({'status':'false', 'message': comment}, status=status.HTTP_400_BAD_REQUEST)
+            items.delete()
+            return JsonResponse({'status':'true'}, status=status.HTTP_204_NO_CONTENT) 
+
+    if item_info['category'] == 'bottom':
+        if item_info['subcategory'] in bshort:
+            try:
+                items = BottomShort.objects.filter(id=item_info['id'], email=session.email)
+            except BottomShort.DoesNotExist:
+                comment['id'] = ["item not present"]
+                return JsonResponse({'status':'false', 'message': comment}, status=status.HTTP_400_BAD_REQUEST)
+            items.delete()
+            return JsonResponse({'status':'true'}, status=status.HTTP_204_NO_CONTENT)
+        else:
+            try:
+                items = BottomLong.objects.filter(id=item_info['id'], email=session.email)
+            except BottomLong.DoesNotExist:
+                comment['id'] = ["item not present"]
+                return JsonResponse({'status':'false', 'message': comment}, status=status.HTTP_400_BAD_REQUEST)
+            items.delete()
+            return JsonResponse({'status':'true'}, status=status.HTTP_204_NO_CONTENT)
+ 
+    if item_info['category'] == 'onepiece':
+        try:
+            items = Dress.objects.filter(id=item_info['id'], email=session.email)
+        except Dress.DoesNotExist:
+            comment['id'] = ["item not present"]
+            return JsonResponse({'status':'false', 'message': comment}, status=status.HTTP_400_BAD_REQUEST)
+        items.delete()
+        return JsonResponse({'status':'true'}, status=status.HTTP_204_NO_CONTENT)
+  
