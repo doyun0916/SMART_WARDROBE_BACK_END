@@ -1,9 +1,9 @@
 from rest_framework import serializers
-from coordi.models import Mancasual
+from coordi.models import Mcasual, Mcampus, Mminimal, Mstreet, Mtravel, Msports, Mformal, Mdandy, Munique, Mworkwear, Wcampus, Wsports, Wcasual, Wformal, Wromantic, Wgirlish, Wstreet, Wfeminine, Wtravel, Wunique, Wworkwear, Wminimal, Wdandy
 
 class McasualSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Mancasual                           
+        model = Mcasual
         fields = ('outer',
                   'outercol',
                   'top',
@@ -16,7 +16,7 @@ class McasualSerializer(serializers.ModelSerializer):
 
 class McampusSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Mancampus
+        model = Mcampus
         fields = ('outer',
                   'outercol',
                   'top',
@@ -29,7 +29,7 @@ class McampusSerializer(serializers.ModelSerializer):
 
 class MminimalSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Manminimal
+        model = Mminimal
         fields = ('outer',
                   'outercol',
                   'top',
@@ -42,7 +42,7 @@ class MminimalSerializer(serializers.ModelSerializer):
 
 class MstreetSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Manstreet
+        model = Mstreet
         fields = ('outer',
                   'outercol',
                   'top',
@@ -55,7 +55,7 @@ class MstreetSerializer(serializers.ModelSerializer):
 
 class MtravelSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Mantravel
+        model = Mtravel
         fields = ('outer',
                   'outercol',
                   'top',
@@ -68,7 +68,7 @@ class MtravelSerializer(serializers.ModelSerializer):
 
 class MsportsSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Mansports
+        model = Msports
         fields = ('outer',
                   'outercol',
                   'top',
@@ -81,7 +81,7 @@ class MsportsSerializer(serializers.ModelSerializer):
 
 class MformalSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Manformal
+        model = Mformal
         fields = ('outer',
                   'outercol',
                   'top',
@@ -94,7 +94,7 @@ class MformalSerializer(serializers.ModelSerializer):
 
 class MdandySerializer(serializers.ModelSerializer):
     class Meta:
-        model = Mandandy
+        model = Mdandy
         fields = ('outer',
                   'outercol',
                   'top',
@@ -107,7 +107,7 @@ class MdandySerializer(serializers.ModelSerializer):
 
 class MuniqueSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Manunique
+        model = Munique
         fields = ('outer',
                   'outercol',
                   'top',
@@ -120,7 +120,7 @@ class MuniqueSerializer(serializers.ModelSerializer):
 
 class MworkwearSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Manworkwear
+        model = Mworkwear
         fields = ('outer',
                   'outercol',
                   'top',
@@ -136,7 +136,7 @@ class MworkwearSerializer(serializers.ModelSerializer):
 
 class WsportsSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Wosports
+        model = Wsports
         fields = ('outer',
                   'outercol',
                   'top',
@@ -149,7 +149,7 @@ class WsportsSerializer(serializers.ModelSerializer):
 
 class WcasualSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Wocasual
+        model = Wcasual
         fields = ('outer',
                   'outercol',
                   'top',
@@ -162,7 +162,7 @@ class WcasualSerializer(serializers.ModelSerializer):
 
 class WformalSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Woformal
+        model = Wformal
         fields = ('outer',
                   'outercol',
                   'top',
@@ -175,7 +175,7 @@ class WformalSerializer(serializers.ModelSerializer):
 
 class WromanticSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Woromantic
+        model = Wromantic
         fields = ('outer',
                   'outercol',
                   'top',
@@ -188,7 +188,7 @@ class WromanticSerializer(serializers.ModelSerializer):
 
 class WgirlishSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Wogirlish
+        model = Wgirlish
         fields = ('outer',
                   'outercol',
                   'top',
@@ -201,7 +201,7 @@ class WgirlishSerializer(serializers.ModelSerializer):
 
 class WstreetSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Wostreet
+        model = Wstreet
         fields = ('outer',
                   'outercol',
                   'top',
@@ -214,7 +214,7 @@ class WstreetSerializer(serializers.ModelSerializer):
 
 class WfeminineSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Wofeminine
+        model = Wfeminine
         fields = ('outer',
                   'outercol',
                   'top',
@@ -227,7 +227,7 @@ class WfeminineSerializer(serializers.ModelSerializer):
 
 class WtravelSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Wotravel
+        model = Wtravel
         fields = ('outer',
                   'outercol',
                   'top',
@@ -240,7 +240,7 @@ class WtravelSerializer(serializers.ModelSerializer):
 
 class WcampusSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Wocampus
+        model = Wcampus
         fields = ('outer',
                   'outercol',
                   'top',
@@ -253,7 +253,7 @@ class WcampusSerializer(serializers.ModelSerializer):
 
 class WuniqueSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Wounique
+        model = Wunique
         fields = ('outer',
                   'outercol',
                   'top',
@@ -266,7 +266,7 @@ class WuniqueSerializer(serializers.ModelSerializer):
 
 class WworkwearSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Woworkwear
+        model = Wworkwear
         fields = ('outer',
                   'outercol',
                   'top',
@@ -279,7 +279,7 @@ class WworkwearSerializer(serializers.ModelSerializer):
 
 class WminimalSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Wominimal
+        model = Wminimal
         fields = ('outer',
                   'outercol',
                   'top',
@@ -292,7 +292,7 @@ class WminimalSerializer(serializers.ModelSerializer):
 
 class WdandySerializer(serializers.ModelSerializer):
     class Meta:
-        model = Wodandy
+        model = Wdandy
         fields = ('outer',
                   'outercol',
                   'top',
@@ -302,4 +302,3 @@ class WdandySerializer(serializers.ModelSerializer):
                   'dress',
                   'dresscol',
                   'url')
-

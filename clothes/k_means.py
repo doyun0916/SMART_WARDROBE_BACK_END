@@ -5,8 +5,8 @@ import json
 
 """RGB"""
 white = (255, 255, 255)
-lightgray = (211, 211, 211)
-darkgray = (169, 169, 169)
+lightgray = (192, 192, 192)
+darkgray = (96, 96, 96)
 black = (0, 0, 0)
 red = (255, 0, 0)
 pink = (255, 0, 255)
@@ -71,5 +71,6 @@ def image_color_cluster(image_path, json_path, k=3):  # k값은 몇개의 색깔
 
     hist = centroid_histogram(clt)
     hist = np.sort(hist)[::-1]  # 색깔비율 내림차순 정렬
-    print(find_color(clt.cluster_centers_[0]))
+    for i in range(k):
+        print(find_color(clt.cluster_centers_[i]))
 
