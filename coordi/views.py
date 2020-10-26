@@ -5,6 +5,7 @@ from rest_framework.parsers import JSONParser
 from rest_framework import status
 
 from clothes.models import OuterThick, OuterThin, TopLong, TopShort, BottomLong, BottomShort, Dress
+from clothes.serializers import OuterThickSerializer, OuterThinSerializer, TopLongSerializer, TopShortSerializer, BottomLongSerializer, BottomShortSerializer, DressSerializer
 from coordi.models import Mcasual, Mcampus, Mminimal, Mstreet, Mtravel, Msports, Mformal, Mdandy, Munique, Mworkwear, Wsports, Wcasual, Wformal, Wromantic, Wgirlish, Wstreet, Wfeminine, Wtravel, Wcampus, Wunique, Wworkwear, Wminimal, Wdandy
 from coordi.serializers import McasualSerializer, McampusSerializer, MminimalSerializer, MstreetSerializer, MtravelSerializer, MsportsSerializer, MformalSerializer, MdandySerializer, MuniqueSerializer, MworkwearSerializer, WsportsSerializer, WcasualSerializer, WformalSerializer, WromanticSerializer, WgirlishSerializer, WstreetSerializer, WfeminineSerializer, WtravelSerializer, WcampusSerializer, WuniqueSerializer, WworkwearSerializer, WminimalSerializer, WdandySerializer
 from restApi.models import Token
@@ -38,8 +39,8 @@ def coordination(request):
             comment['token'] = ["user not present"]
             return JsonResponse({'status':'false', 'message': comment}, status=status.HTTP_400_BAD_REQUEST)
 
-    recommend_list={}
-
+    recommend_list={}   #나중에 삭제하기
+    final_list=[]
     def recommend(temperature, obj):
         if temperature >= 23:
             style_set = obj.objects.filter(outer__isnull=True,top__in=tshort,bottom__in=bshort,dress__isnull=True).values()
@@ -47,16 +48,10 @@ def coordination(request):
                 myclothes_list=[]
                 t_list=TopShort.objects.filter(email=session.email, color=style['topcol'])
                 t=TopShortSerializer(t_list,many=True)
-                if t.is_valid():
-                    myclothes_list+=t.data
-                else:
-                    return JsonResponse({'status': 'false', 'message': t.errors}, status=status.HTTP_400_BAD_REQUEST)
+                myclothes_list+=t.data
                 b_list=BottomShort.objects.filter(email=session.email, color=style['bottomcol'])
                 b=BottomShortSerializer(b_list,many=True)
-                if b.is_valid():
-                    myclothes_list+=b.data
-                else:
-                    return JsonResponse({'status': 'false', 'message': b.errors}, status=status.HTTP_400_BAD_REQUEST)
+                myclothes_list+=b.data
                 recommend_list[style['url']]=myclothes_list   #{'url주소':리스트} 형태로 반환됨
             return JsonResponse({'recommendList':recommend_list})
         elif temperature < 23 and temperature >= 20:
@@ -67,60 +62,54 @@ def coordination(request):
                 myclothes_list=[]
                 t_list=TopShort.objects.filter(email=session.email, color=style['topcol'])
                 t=TopShortSerializer(t_list,many=True)
-                if t.is_valid():
-                    myclothes_list+=t.data
-                else:
-                    return JsonResponse({'status': 'false', 'message': t.errors}, status=status.HTTP_400_BAD_REQUEST)
+                myclothes_list+=t.data
                 b_list=BottomLong.objects.filter(email=session.email, color=style['bottomcol'])
                 b=BottomLongSerializer(b_list,many=True)
-                if b.is_valid():
-                    myclothes_list+=b.data
-                else:
-                    return JsonResponse({'status': 'false', 'message': b.errors}, status=status.HTTP_400_BAD_REQUEST)
+                myclothes_list+=b.data
                 recommend_list[style['url']]=myclothes_list
             for style in style_set2:
                 myclothes_list=[]
                 t_list=TopLong.objects.filter(email=session.email, color=style['topcol'])
                 t=TopLongSerializer(t_list,many=True)
-                if t.is_valid():
-                    myclothes_list+=t.data
-                else:
-                    return JsonResponse({'status': 'false', 'message': t.errors}, status=status.HTTP_400_BAD_REQUEST)
+                myclothes_list+=t.data
                 b_list=BottomShort.objects.filter(email=session.email, color=style['bottomcol'])
                 b=BottomShortSerializer(b_list,many=True)
-                if b.is_valid():
-                    myclothes_list+=b.data
-                else:
-                    return JsonResponse({'status': 'false', 'message': b.errors}, status=status.HTTP_400_BAD_REQUEST)
+                myclothes_list+=b.data
                 recommend_list[style['url']]=myclothes_list
             for style in style_set3:
                 myclothes_list=[]
                 d_list=Dress.objects.filter(email=session.email, color=style['dresscol'])
                 d=DressSerializer(d_list,many=True)
-                if d.is_valid():
-                    myclothes_list+=d.data
-                else:
-                    return JsonResponse({'status': 'false', 'message': d.errors}, status=status.HTTP_400_BAD_REQUEST)
+                myclothes_list+=d.data
                 recommend_list[style['url']]=myclothes_list
             return JsonResponse({'recommendList':recommend_list})
         elif temperature < 20 and temperature >= 17:
-            style_set = obj.objects.filter(outer__isnull=True,top__in=tlong,bottom__in=blong,dress__isnull=True).values()
-            for style in style_set:
-                myclothes_list=[]
-                t_list=TopLong.objects.filter(email=session.email, color=style['topcol'])
-                t=TopLongSerializer(t_list,many=True)
-                if t.is_valid():
-                    myclothes_list+=t.data
-                else:
-                    return JsonResponse({'status': 'false', 'message': t.errors}, status=status.HTTP_400_BAD_REQUEST)
-                b_list=BottomLong.objects.filter(email=session.email, color=style['bottomcol'])
-                b=BottomLongSerializer(b_list,many=True)
-                if b.is_valid():
-                    myclothes_list+=b.data
-                else:
-                    return JsonResponse({'status': 'false', 'message': b.errors}, status=status.HTTP_400_BAD_REQUEST)
-                recommend_list[style['url']]=myclothes_list
-            return JsonResponse({'recommendList':recommend_list})
+#            style_set = obj.objects.filter(outer__isnull=True,top__in=tlong,bottom__in=blong,dress__isnull=True).values()  #5개만 뽑기
+#            for style in style_set:
+#                final_dict={}
+#                myclothes_list=[]
+#                t_list=TopLong.objects.filter(email=session.email, color=style['topcol']).order_by("?")
+#                t=TopLongSerializer(t_list,many=True)
+#                myclothes_list+=t.data[0:1]
+#                b_list=BottomLong.objects.filter(email=session.email, color=style['bottomcol']).order_by("?")
+#                b=BottomLongSerializer(b_list,many=True)
+#                myclothes_list+=b.data[0:1]
+#                final_dict['recommendImageURL']=style['url']
+#                final_dict['itemList']=myclothes_list
+#                final_list.append(final_dict)
+#            return JsonResponse(final_list,safe=False)
+            final_dict={}
+            myclothes_list=[]
+            t_list=TopLong.objects.filter(email=session.email).order_by("?")
+            t=TopLongSerializer(t_list,many=True)
+            myclothes_list+=t.data[0:1]
+            b_list=BottomLong.objects.filter(email=session.email).order_by("?")
+            b=BottomLongSerializer(b_list,many=True)
+            myclothes_list+=b.data[0:1]
+            final_dict['recommendImageURL']='url'
+            final_dict['itemList']=myclothes_list
+            final_list.append(final_dict)
+            return JsonResponse(final_list,safe=False)
         elif temperature < 17 and temperature >= 12:
             style_set1 = obj.objects.filter(outer__in=othin,top__in=tlong,bottom__in=blong,dress__isnull=True).values()
             style_set2 = obj.objects.filter(outer__isnull=True,top__in=tlong,bottom__in=blong,dress__isnull=True).values()
@@ -128,37 +117,22 @@ def coordination(request):
                 myclothes_list=[]
                 o_list=OuterThin.objects.filter(email=session.email, color=style['outercol'])
                 o=OuterThinSerializer(o_list,many=True)
-                if o.is_valid():
-                    myclothes_list+=o.data
-                else:
-                    return JsonResponse({'status': 'false', 'message': o.errors}, status=status.HTTP_400_BAD_REQUEST)
+                myclothes_list+=o.data
                 t_list=TopLong.objects.filter(email=session.email, color=style['topcol'])
                 t=TopLongSerializer(t_list,many=True)
-                if t.is_valid():
-                    myclothes_list+=t.data
-                else:
-                    return JsonResponse({'status': 'false', 'message': t.errors}, status=status.HTTP_400_BAD_REQUEST)
+                myclothes_list+=t.data
                 b_list=BottomLong.objects.filter(email=session.email, color=style['bottomcol'])
                 b=BottomLongSerializer(b_list,many=True)
-                if b.is_valid():
-                    myclothes_list+=b.data
-                else:
-                    return JsonResponse({'status': 'false', 'message': b.errors}, status=status.HTTP_400_BAD_REQUEST)
+                myclothes_list+=b.data
                 recommend_list[style['url']]=myclothes_list
             for style in style_set2:
                 myclothes_list=[]
                 t_list=TopLong.objects.filter(email=session.email, color=style['topcol'])
                 t=TopLongSerializer(t_list,many=True)
-                if t.is_valid():
-                    myclothes_list+=t.data
-                else:
-                    return JsonResponse({'status': 'false', 'message': t.errors}, status=status.HTTP_400_BAD_REQUEST)
+                myclothes_list+=t.data
                 b_list=BottomLong.objects.filter(email=session.email, color=style['bottomcol'])
                 b=BottomLongSerializer(b_list,many=True)
-                if b.is_valid():
-                    myclothes_list+=b.data
-                else:
-                    return JsonResponse({'status': 'false', 'message': b.errors}, status=status.HTTP_400_BAD_REQUEST)
+                myclothes_list+=b.data
                 recommend_list[style['url']]=myclothes_list
             return JsonResponse({'recommendList':recommend_list})
         elif temperature < 12 and temperature >= 9:
@@ -167,22 +141,13 @@ def coordination(request):
                 myclothes_list=[]
                 o_list=OuterThin.objects.filter(email=session.email, color=style['outercol'])
                 o=OuterThinSerializer(o_list,many=True)
-                if o.is_valid():
-                    myclothes_list+=o.data
-                else:
-                    return JsonResponse({'status': 'false', 'message': o.errors}, status=status.HTTP_400_BAD_REQUEST)
+                myclothes_list+=o.data
                 t_list=TopLong.objects.filter(email=session.email, color=style['topcol'])
                 t=TopLongSerializer(t_list,many=True)
-                if t.is_valid():
-                    myclothes_list+=t.data
-                else:
-                    return JsonResponse({'status': 'false', 'message': t.errors}, status=status.HTTP_400_BAD_REQUEST)
+                myclothes_list+=t.data
                 b_list=BottomLong.objects.filter(email=session.email, color=style['bottomcol'])
                 b=BottomLongSerializer(b_list,many=True)
-                if b.is_valid():
-                    myclothes_list+=b.data
-                else:
-                    return JsonResponse({'status': 'false', 'message': b.errors}, status=status.HTTP_400_BAD_REQUEST)
+                myclothes_list+=b.data
                 recommend_list[style['url']]=myclothes_list
             return JsonResponse({'recommendList':recommend_list})
         elif temperature < 9:
@@ -191,22 +156,13 @@ def coordination(request):
                 myclothes_list=[]
                 o_list=OuterThick.objects.filter(email=session.email, color=style['outercol'])
                 o=OuterThickSerializer(o_list,many=True)
-                if o.is_valid():
-                    myclothes_list+=o.data
-                else:
-                    return JsonResponse({'status': 'false', 'message': o.errors}, status=status.HTTP_400_BAD_REQUEST)
+                myclothes_list+=o.data
                 t_list=TopLong.objects.filter(email=session.email, color=style['topcol'])
                 t=TopLongSerializer(t_list,many=True)
-                if t.is_valid():
-                    myclothes_list+=t.data
-                else:
-                    return JsonResponse({'status': 'false', 'message': t.errors}, status=status.HTTP_400_BAD_REQUEST)
+                myclothes_list+=t.data
                 b_list=BottomLong.objects.filter(email=session.email, color=style['bottomcol'])
                 b=BottomLongSerializer(b_list,many=True)
-                if b.is_valid():
-                    myclothes_list+=b.data
-                else:
-                    return JsonResponse({'status': 'false', 'message': b.errors}, status=status.HTTP_400_BAD_REQUEST)
+                myclothes_list+=b.data
                 recommend_list[style['url']]=myclothes_list
             return JsonResponse({'recommendList':recommend_list})
         else:
@@ -215,55 +171,55 @@ def coordination(request):
 
     if user_info['sex'] == 'male':
         if user_info['style'] == 'campus':
-            recommend(user_info['temp'],Mcampus)
+            return recommend(user_info['temp'],Mcampus)
         elif user_info['style'] == 'casual':
-            recommend(user_info['temp'],Mcasual)
+            return recommend(user_info['temp'],Mcasual)
         elif user_info['style'] == 'dandy':
-            recommend(user_info['temp'],Mdandy)
+            return recommend(user_info['temp'],Mdandy)
         elif user_info['style'] == 'formal':
-            recommend(user_info['temp'],Mformal)
+            return recommend(user_info['temp'],Mformal)
         elif user_info['style'] == 'minimal':
-            recommend(user_info['temp'],Mminimal)
+            return recommend(user_info['temp'],Mminimal)
         elif user_info['style'] == 'sports':
-            recommend(user_info['temp'],Msports)
+            return recommend(user_info['temp'],Msports)
         elif user_info['style'] == 'street':
-            recommend(user_info['temp'],Mstreet)
+            return recommend(user_info['temp'],Mstreet)
         elif user_info['style'] == 'travel':
-            recommend(user_info['temp'],Mtravel)
+            return recommend(user_info['temp'],Mtravel)
         elif user_info['style'] == 'unique':
-            recommend(user_info['temp'],Munique)
+            return recommend(user_info['temp'],Munique)
         elif user_info['style'] == 'workwear':
-            recommend(user_info['temp'],Mworkwear)
+            return recommend(user_info['temp'],Mworkwear)
         else:
             comment['style'] = ["Wrong style name"]
             return JsonResponse({'status':'false', 'message': comment}, status=status.HTTP_400_BAD_REQUEST)
     elif user_info['sex'] == 'female':
         if user_info['style'] == 'campus':
-            recommend(user_info['temp'],Wcampus)
+            return recommend(user_info['temp'],Wcampus)
         elif user_info['style'] == 'casual':
-            recommend(user_info['temp'],Wcasual)
+            return recommend(user_info['temp'],Wcasual)
         elif user_info['style'] == 'dandy':
-            recommend(user_info['temp'],Wdandy)
+            return recommend(user_info['temp'],Wdandy)
         elif user_info['style'] == 'formal':
-            recommend(user_info['temp'],Wformal)
+            return recommend(user_info['temp'],Wformal)
         elif user_info['style'] == 'minimal':
-            recommend(user_info['temp'],Wminimal)
+            return recommend(user_info['temp'],Wminimal)
         elif user_info['style'] == 'sports':
-            recommend(user_info['temp'],Wsports)
+            return recommend(user_info['temp'],Wsports)
         elif user_info['style'] == 'street':
-            recommend(user_info['temp'],Wstreet)
+            return recommend(user_info['temp'],Wstreet)
         elif user_info['style'] == 'travel':
-            recommend(user_info['temp'],Wtravel)
+            return recommend(user_info['temp'],Wtravel)
         elif user_info['style'] == 'unique':
-            recommend(user_info['temp'],Wunique)
+            return recommend(user_info['temp'],Wunique)
         elif user_info['style'] == 'workwear':
-            recommend(user_info['temp'],Wworkwear)
+            return recommend(user_info['temp'],Wworkwear)
         elif user_info['style'] == 'girlish':
-            recommend(user_info['temp'],Wgirlish)
+            return recommend(user_info['temp'],Wgirlish)
         elif user_info['style'] == 'feminine':
-            recommend(user_info['temp'],Wfeminine)
+            return recommend(user_info['temp'],Wfeminine)
         elif user_info['style'] == 'romantic':
-            recommend(user_info['temp'],Wromantic)
+            return recommend(user_info['temp'],Wromantic)
         else:
             comment['style'] = ["Wrong style name"]
             return JsonResponse({'status':'false', 'message': comment}, status=status.HTTP_400_BAD_REQUEST)
