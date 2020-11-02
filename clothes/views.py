@@ -6,7 +6,7 @@ from rest_framework import status
 
 from clothes.models import OuterThick, OuterThin, TopLong, TopShort, BottomLong, BottomShort, Dress
 from clothes.serializers import OuterThickSerializer, OuterThinSerializer, TopLongSerializer, TopShortSerializer, BottomLongSerializer, BottomShortSerializer, DressSerializer
-from restApi.models import Token
+from restApi.models import Token, Account
 from rest_framework.decorators import api_view
 from rest_framework.renderers import JSONRenderer
 
@@ -19,6 +19,7 @@ tlong = ['long blouse', 'long shirt', 'long tee', 'hoodie', 'sweater', 'turtlene
 bshort = ['short skirt', 'denim shorts', 'shorts']
 delcheck = ['token', 'id', 'category', 'subcategory']
 upcheck = ['token', 'id', 'name', 'brand', 'color', 'url', 'category', 'subcategory', 'categoryNew', 'subcategoryNew', 'descript']
+insertcheck = ['token', ]
 
 @api_view(['POST'])
 def item_insert(request):
@@ -580,4 +581,96 @@ def item_delete(request):
             return JsonResponse({'status':'false', 'message': comment}, status=status.HTTP_400_BAD_REQUEST)
         items.delete()
         return JsonResponse({'status':'true'}, status=status.HTTP_204_NO_CONTENT)
-  
+
+@api_view(['POST'])
+def item_get_all(request):
+    item_info = JSONParser().parse(request)
+    user = {}
+    result = {}
+    outer = {}
+    top = {}
+    bottom = {}
+    dress = {}
+    comment = {}
+    try:
+        session = Token.objects.get(token=item_info['token'])
+    except Token.DoesNotExist:
+        comment['token'] = ["user not present"]
+        return JsonResponse({'status':'false', 'message': comment}, status=status.HTTP_400_BAD_REQUEST)
+
+    try:
+        user_in = Account.objects.get(email=session.email)
+    except Token.DoesNotExist:
+        comment['email'] = ["account not present"]
+        return JsonResponse({'status':'false', 'message': comment}, status=status.HTTP_400_BAD_REQUEST) 
+    
+    user['email'] = user_in.email
+    user['nickname'] = user_in.nickname
+    user['sex'] = user_in.sex
+
+    outerthickdb = OuterThick.objects.filter(email=session.email)
+    othick = OuterThickSerializer(outerthickdb, many=True)
+    if not bool(othick.data):
+        outer['outerthick'] = {}
+    else:
+        othick.data[0].pop('email')
+        outer['outerthick'] = othick.data
+
+    outerthindb = OuterThin.objects.filter(email=session.email)
+    othin = OuterThinSerializer(outerthindb, many=True)
+    if not bool(othin.data):
+        outer['outerthin'] = {}
+    else:
+        othin.data[0].pop('email')
+        outer['outerthin'] = othin.data
+    result['outer'] = outer
+
+
+
+
+    toplongdb = TopLong.objects.filter(email=session.email)
+    tlong = TopLongSerializer(toplongdb, many=True)
+    if not bool(tlong.data):
+        top['toplong'] = {}
+    else:
+        tlong.data[0].pop('email')
+        top['toplong'] = tlong.data
+
+    topshortdb = TopShort.objects.filter(email=session.email)
+    tshort = TopShortSerializer(topshortdb, many=True)
+    if not bool(tshort.data):
+        top['topshort'] = {}
+    else:
+        tshort.data[0].pop('email')
+        top['topshort'] = tshort.data
+    result['top'] = top
+
+
+
+    bottomlongdb = BottomLong.objects.filter(email=session.email)
+    blong = BottomLongSerializer(bottomlongdb, many=True)
+    if not bool(blong.data):
+        bottom['bottomlong'] = {}
+    else:
+        blong.data[0].pop('email')
+        bottom['bottomlong'] = blong.data
+
+    bottomshortdb = BottomShort.objects.filter(email=session.email)
+    bshort = BottomShortSerializer(bottomshortdb, many=True)
+    if not bool(bshort.data):
+        bottom['bottomshort'] = {}
+    else:
+        bshort.data[0].pop('email')
+        bottom['bottomshort'] = bshort.data
+    result['bottom'] = bottom
+
+    dressdb = Dress.objects.filter(email=session.email)
+    dre = DressSerializer(dressdb, many=True)
+    if not bool(dre.data):
+        dress['dress'] = {}
+    else:
+        dre.data[0].pop('email')
+        dress['dress'] = dre.data
+    result['dress'] = dress
+    return JsonResponse({'status':'true', 'user': user, 'items': result}, safe=False)
+

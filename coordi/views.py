@@ -6,7 +6,7 @@ from rest_framework import status
 
 from clothes.models import OuterThick, OuterThin, TopLong, TopShort, BottomLong, BottomShort, Dress
 from clothes.serializers import OuterThickSerializer, OuterThinSerializer, TopLongSerializer, TopShortSerializer, BottomLongSerializer, BottomShortSerializer, DressSerializer
-from coordi.models import Mcasual, Mcampus, Mminimal, Mstreet, Mtravel, Msports, Mformal, Mdandy, Munique, Mworkwear, Wsports, Wcasual, Wformal, Wromantic, Wgirlish, Wstreet, Wfeminine, Wtravel, Wcampus, Wunique, Wworkwear, Wminimal, Wdandy
+from coordi.models import Mcasual, Mcampus, Mminimal, Mstreet, Mtravel, Msports, Mformal, Mdandy, Wsports, Wcasual, Wformal, Wromantic, Wgirlish, Wstreet, Wfeminine, Wtravel
 from coordi.serializers import McasualSerializer, McampusSerializer, MminimalSerializer, MstreetSerializer, MtravelSerializer, MsportsSerializer, MformalSerializer, MdandySerializer, MuniqueSerializer, MworkwearSerializer, WsportsSerializer, WcasualSerializer, WformalSerializer, WromanticSerializer, WgirlishSerializer, WstreetSerializer, WfeminineSerializer, WtravelSerializer, WcampusSerializer, WuniqueSerializer, WworkwearSerializer, WminimalSerializer, WdandySerializer
 from restApi.models import Token
 from rest_framework.decorators import api_view
@@ -14,7 +14,6 @@ from rest_framework.renderers import JSONRenderer
 
 from django.conf import settings
 from django.utils import timezone
-from django.db.models import F
 
 
 othik = ['coat', 'coat fur', 'parka']
@@ -39,132 +38,161 @@ def coordination(request):
             comment['token'] = ["user not present"]
             return JsonResponse({'status':'false', 'message': comment}, status=status.HTTP_400_BAD_REQUEST)
 
-    recommend_list={}   #나중에 삭제하기
     final_list=[]
     def recommend(temperature, obj):
         if temperature >= 23:
-            style_set = obj.objects.filter(outer__isnull=True,top__in=tshort,bottom__in=bshort,dress__isnull=True).values()
+            style_set = obj.objects.filter(outer__isnull=True,top__in=tshort,bottom__in=bshort,dress__isnull=True).values()[0:5]
             for style in style_set:
+                final_dict={}
                 myclothes_list=[]
-                t_list=TopShort.objects.filter(email=session.email, color=style['topcol'])
+                t_list=TopShort.objects.filter(email=session.email, color=style['topcol'], subcategory=style['top']).order_by("?")
+                # if not t_list:
+                #     comment['token'] = ["There is no item recommended"]
+                #     return JsonResponse({'status':'false', 'message': comment}, status=status.HTTP_400_BAD_REQUEST)
                 t=TopShortSerializer(t_list,many=True)
-                myclothes_list+=t.data
-                b_list=BottomShort.objects.filter(email=session.email, color=style['bottomcol'])
+                myclothes_list+=t.data[0:1]
+                b_list=BottomShort.objects.filter(email=session.email, color=style['bottomcol'], subcategory=style['bottom']).order_by("?")
                 b=BottomShortSerializer(b_list,many=True)
-                myclothes_list+=b.data
-                recommend_list[style['url']]=myclothes_list   #{'url주소':리스트} 형태로 반환됨
-            return JsonResponse({'recommendList':recommend_list})
-        elif temperature < 23 and temperature >= 20:
-            style_set1 = obj.objects.filter(outer__isnull=True,top__in=tshort,bottom__in=blong,dress__isnull=True).values()
-            style_set2 = obj.objects.filter(outer__isnull=True,top__in=tlong,bottom__in=bshort,dress__isnull=True).values()
-            style_set3 = obj.objects.filter(outer__isnull=True,top__isnull=True,bottom__isnull=True,dress__in=onepiece).values()
-            for style in style_set1:
-                myclothes_list=[]
-                t_list=TopShort.objects.filter(email=session.email, color=style['topcol'])
-                t=TopShortSerializer(t_list,many=True)
-                myclothes_list+=t.data
-                b_list=BottomLong.objects.filter(email=session.email, color=style['bottomcol'])
-                b=BottomLongSerializer(b_list,many=True)
-                myclothes_list+=b.data
-                recommend_list[style['url']]=myclothes_list
-            for style in style_set2:
-                myclothes_list=[]
-                t_list=TopLong.objects.filter(email=session.email, color=style['topcol'])
-                t=TopLongSerializer(t_list,many=True)
-                myclothes_list+=t.data
-                b_list=BottomShort.objects.filter(email=session.email, color=style['bottomcol'])
-                b=BottomShortSerializer(b_list,many=True)
-                myclothes_list+=b.data
-                recommend_list[style['url']]=myclothes_list
-            for style in style_set3:
-                myclothes_list=[]
-                d_list=Dress.objects.filter(email=session.email, color=style['dresscol'])
-                d=DressSerializer(d_list,many=True)
-                myclothes_list+=d.data
-                recommend_list[style['url']]=myclothes_list
-            return JsonResponse({'recommendList':recommend_list})
-        elif temperature < 20 and temperature >= 17:
-#            style_set = obj.objects.filter(outer__isnull=True,top__in=tlong,bottom__in=blong,dress__isnull=True).values()  #5개만 뽑기
-#            for style in style_set:
-#                final_dict={}
-#                myclothes_list=[]
-#                t_list=TopLong.objects.filter(email=session.email, color=style['topcol']).order_by("?")
-#                t=TopLongSerializer(t_list,many=True)
-#                myclothes_list+=t.data[0:1]
-#                b_list=BottomLong.objects.filter(email=session.email, color=style['bottomcol']).order_by("?")
-#                b=BottomLongSerializer(b_list,many=True)
-#                myclothes_list+=b.data[0:1]
-#                final_dict['recommendImageURL']=style['url']
-#                final_dict['itemList']=myclothes_list
-#                final_list.append(final_dict)
-#            return JsonResponse(final_list,safe=False)
-            final_dict={}
-            myclothes_list=[]
-            t_list=TopLong.objects.filter(email=session.email).order_by("?")
-            t=TopLongSerializer(t_list,many=True)
-            myclothes_list+=t.data[0:1]
-            b_list=BottomLong.objects.filter(email=session.email).order_by("?")
-            b=BottomLongSerializer(b_list,many=True)
-            myclothes_list+=b.data[0:1]
-            final_dict['recommendImageURL']='url'
-            final_dict['itemList']=myclothes_list
-            final_list.append(final_dict)
+                myclothes_list+=b.data[0:1]
+                final_dict['recommendImageURL']=style['url']
+                final_dict['itemList']=myclothes_list
+                final_list.append(final_dict)
             return JsonResponse(final_list,safe=False)
-        elif temperature < 17 and temperature >= 12:
-            style_set1 = obj.objects.filter(outer__in=othin,top__in=tlong,bottom__in=blong,dress__isnull=True).values()
-            style_set2 = obj.objects.filter(outer__isnull=True,top__in=tlong,bottom__in=blong,dress__isnull=True).values()
+        elif temperature < 23 and temperature >= 20:
+            style_set1 = obj.objects.filter(outer__isnull=True,top__in=tshort,bottom__in=blong,dress__isnull=True).values()[0:5]
+            style_set2 = obj.objects.filter(outer__isnull=True,top__in=tlong,bottom__in=bshort,dress__isnull=True).values()[0:5]
+            style_set3 = obj.objects.filter(outer__isnull=True,top__isnull=True,bottom__isnull=True,dress__in=onepiece).values()[0:5]
             for style in style_set1:
+                final_dict={}
                 myclothes_list=[]
-                o_list=OuterThin.objects.filter(email=session.email, color=style['outercol'])
-                o=OuterThinSerializer(o_list,many=True)
-                myclothes_list+=o.data
-                t_list=TopLong.objects.filter(email=session.email, color=style['topcol'])
-                t=TopLongSerializer(t_list,many=True)
-                myclothes_list+=t.data
-                b_list=BottomLong.objects.filter(email=session.email, color=style['bottomcol'])
+                t_list=TopShort.objects.filter(email=session.email, color=style['topcol'], subcategory=style['top']).order_by("?")
+                t=TopShortSerializer(t_list,many=True)
+                myclothes_list+=t.data[0:1]
+                b_list=BottomLong.objects.filter(email=session.email, color=style['bottomcol'], subcategory=style['bottom']).order_by("?")
                 b=BottomLongSerializer(b_list,many=True)
-                myclothes_list+=b.data
-                recommend_list[style['url']]=myclothes_list
+                myclothes_list+=b.data[0:1]
+                final_dict['recommendImageURL']=style['url']
+                final_dict['itemList']=myclothes_list
+                final_list.append(final_dict)
             for style in style_set2:
+                final_dict={}
                 myclothes_list=[]
-                t_list=TopLong.objects.filter(email=session.email, color=style['topcol'])
+                t_list=TopLong.objects.filter(email=session.email, color=style['topcol'], subcategory=style['top']).order_by("?")
                 t=TopLongSerializer(t_list,many=True)
-                myclothes_list+=t.data
-                b_list=BottomLong.objects.filter(email=session.email, color=style['bottomcol'])
-                b=BottomLongSerializer(b_list,many=True)
-                myclothes_list+=b.data
-                recommend_list[style['url']]=myclothes_list
-            return JsonResponse({'recommendList':recommend_list})
-        elif temperature < 12 and temperature >= 9:
-            style_set = obj.objects.filter(outer__in=othin,top__in=tlong,bottom__in=blong,dress__isnull=True).values()
-            for style in style_set:
+                myclothes_list+=t.data[0:1]
+                b_list=BottomShort.objects.filter(email=session.email, color=style['bottomcol'], subcategory=style['bottom']).order_by("?")
+                b=BottomShortSerializer(b_list,many=True)
+                myclothes_list+=b.data[0:1]
+                final_dict['recommendImageURL']=style['url']
+                final_dict['itemList']=myclothes_list
+                final_list.append(final_dict)
+            for style in style_set3:
+                final_dict={}
                 myclothes_list=[]
-                o_list=OuterThin.objects.filter(email=session.email, color=style['outercol'])
+                d_list=Dress.objects.filter(email=session.email, color=style['dresscol'], subcategory=style['dress']).order_by("?")
+                d=DressSerializer(d_list,many=True)
+                myclothes_list+=d.data[0:1]
+                final_dict['recommendImageURL']=style['url']
+                final_dict['itemList']=myclothes_list
+                final_list.append(final_dict)
+            return JsonResponse(final_list,safe=False)
+        elif temperature < 20 and temperature >= 17:
+            style_set = obj.objects.filter(outer__isnull=True,top__in=tlong,bottom__in=blong,dress__isnull=True).values()[0:5]
+            for style in style_set:
+                final_dict={}
+                myclothes_list=[]
+                t_list=TopLong.objects.filter(email=session.email, color=style['topcol'], subcategory=style['top']).order_by("?")
+                t=TopLongSerializer(t_list,many=True)
+                myclothes_list+=t.data[0:1]
+                b_list=BottomLong.objects.filter(email=session.email, color=style['bottomcol'], subcategory=style['bottom']).order_by("?")
+                b=BottomLongSerializer(b_list,many=True)
+                myclothes_list+=b.data[0:1]
+                final_dict['recommendImageURL']=style['url']
+                final_dict['itemList']=myclothes_list
+                final_list.append(final_dict)
+            return JsonResponse(final_list,safe=False)
+            """
+            for i in range(2):
+                final_dict={}
+                myclothes_list=[]
+                t_list=TopLong.objects.filter(email=session.email, subcategory='long shirt').order_by("?")
+                t=TopLongSerializer(t_list,many=True)
+                myclothes_list+=t.data[0:1]
+                b_list=BottomLong.objects.filter(email=session.email).order_by("?")
+                b=BottomLongSerializer(b_list,many=True)
+                myclothes_list+=b.data[0:1]
+                final_dict['recommendImageURL']='url'
+                final_dict['itemList']=myclothes_list
+                final_list.append(final_dict)
+            return JsonResponse(final_list,safe=False)
+            """
+        elif temperature < 17 and temperature >= 12:
+            style_set1 = obj.objects.filter(outer__in=othin,top__in=tlong,bottom__in=blong,dress__isnull=True).values()[0:5]
+            style_set2 = obj.objects.filter(outer__isnull=True,top__in=tlong,bottom__in=blong,dress__isnull=True).values()[0:5]
+            for style in style_set1:
+                final_dict={}
+                myclothes_list=[]
+                o_list=OuterThin.objects.filter(email=session.email, color=style['outercol'], subcategory=style['outer']).order_by("?")
                 o=OuterThinSerializer(o_list,many=True)
-                myclothes_list+=o.data
-                t_list=TopLong.objects.filter(email=session.email, color=style['topcol'])
+                myclothes_list+=o.data[0:1]
+                t_list=TopLong.objects.filter(email=session.email, color=style['topcol'], subcategory=style['top']).order_by("?")
                 t=TopLongSerializer(t_list,many=True)
-                myclothes_list+=t.data
-                b_list=BottomLong.objects.filter(email=session.email, color=style['bottomcol'])
+                myclothes_list+=t.data[0:1]
+                b_list=BottomLong.objects.filter(email=session.email, color=style['bottomcol'], subcategory=style['bottom']).order_by("?")
                 b=BottomLongSerializer(b_list,many=True)
-                myclothes_list+=b.data
-                recommend_list[style['url']]=myclothes_list
-            return JsonResponse({'recommendList':recommend_list})
-        elif temperature < 9:
-            style_set = obj.objects.filter(outer__in=othick,top__in=tlong,bottom__in=blong,dress__isnull=True).values()
-            for style in style_set:
+                myclothes_list+=b.data[0:1]
+                final_dict['recommendImageURL']=style['url']
+                final_dict['itemList']=myclothes_list
+                final_list.append(final_dict)
+            for style in style_set2:
+                final_dict={}
                 myclothes_list=[]
-                o_list=OuterThick.objects.filter(email=session.email, color=style['outercol'])
-                o=OuterThickSerializer(o_list,many=True)
-                myclothes_list+=o.data
-                t_list=TopLong.objects.filter(email=session.email, color=style['topcol'])
+                t_list=TopLong.objects.filter(email=session.email, color=style['topcol'], subcategory=style['top']).order_by("?")
                 t=TopLongSerializer(t_list,many=True)
-                myclothes_list+=t.data
-                b_list=BottomLong.objects.filter(email=session.email, color=style['bottomcol'])
+                myclothes_list+=t.data[0:1]
+                b_list=BottomLong.objects.filter(email=session.email, color=style['bottomcol'], subcategory=style['bottom']).order_by("?")
                 b=BottomLongSerializer(b_list,many=True)
-                myclothes_list+=b.data
-                recommend_list[style['url']]=myclothes_list
-            return JsonResponse({'recommendList':recommend_list})
+                myclothes_list+=b.data[0:1]
+                final_dict['recommendImageURL']=style['url']
+                final_dict['itemList']=myclothes_list
+                final_list.append(final_dict)
+            return JsonResponse(final_list,safe=False)
+        elif temperature < 12 and temperature >= 9:
+            style_set = obj.objects.filter(outer__in=othin,top__in=tlong,bottom__in=blong,dress__isnull=True).values()[0:5]
+            for style in style_set:
+                final_dict={}
+                myclothes_list=[]
+                o_list=OuterThin.objects.filter(email=session.email, color=style['outercol'], subcategory=style['outer']).order_by("?")
+                o=OuterThinSerializer(o_list,many=True)
+                myclothes_list+=o.data[0:1]
+                t_list=TopLong.objects.filter(email=session.email, color=style['topcol'], subcategory=style['top']).order_by("?")
+                t=TopLongSerializer(t_list,many=True)
+                myclothes_list+=t.data[0:1]
+                b_list=BottomLong.objects.filter(email=session.email, color=style['bottomcol'], subcategory=style['bottom']).order_by("?")
+                b=BottomLongSerializer(b_list,many=True)
+                myclothes_list+=b.data[0:1]
+                final_dict['recommendImageURL']=style['url']
+                final_dict['itemList']=myclothes_list
+                final_list.append(final_dict)
+            return JsonResponse(final_list,safe=False)
+        elif temperature < 9:
+            style_set = obj.objects.filter(outer__in=othick,top__in=tlong,bottom__in=blong,dress__isnull=True).values()[0:5]
+            for style in style_set:
+                final_dict={}
+                myclothes_list=[]
+                o_list=OuterThick.objects.filter(email=session.email, color=style['outercol'], subcategory=style['outer']).order_by("?")
+                o=OuterThickSerializer(o_list,many=True)
+                myclothes_list+=o.data[0:1]
+                t_list=TopLong.objects.filter(email=session.email, color=style['topcol'], subcategory=style['top']).order_by("?")
+                t=TopLongSerializer(t_list,many=True)
+                myclothes_list+=t.data[0:1]
+                b_list=BottomLong.objects.filter(email=session.email, color=style['bottomcol'], subcategory=style['bottom']).order_by("?")
+                b=BottomLongSerializer(b_list,many=True)
+                myclothes_list+=b.data[0:1]
+                final_dict['recommendImageURL']=style['url']
+                final_dict['itemList']=myclothes_list
+                final_list.append(final_dict)
+            return JsonResponse(final_list,safe=False)
         else:
             comment['temp'] = ["Wrong temperature"]
             return JsonResponse({'status':'false', 'message': comment}, status=status.HTTP_400_BAD_REQUEST)
@@ -226,3 +254,4 @@ def coordination(request):
     else:
         comment['sex'] = ["Wrong sex"]
         return JsonResponse({'status':'false', 'message': comment}, status=status.HTTP_400_BAD_REQUEST)
+
