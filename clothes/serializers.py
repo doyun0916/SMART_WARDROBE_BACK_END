@@ -1,6 +1,17 @@
 from rest_framework import serializers
 from clothes.models import OuterThick, OuterThin, TopLong, TopShort, BottomLong, BottomShort, Dress
 
+class Item(serializers.ModelSerializer):
+    class Meta:
+        model = OuterThick
+        fields = ('id',
+                  'name',
+                  'color',
+                  'subcategory',
+                  'url',
+                  'descript',
+                  'brand'
+                  )
 class OuterThickSerializer(serializers.ModelSerializer):
     class Meta:
         model = OuterThick

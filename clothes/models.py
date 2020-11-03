@@ -7,8 +7,8 @@ class OuterThick(models.Model):
     color = models.CharField(max_length=70)
     subcategory = models.CharField(max_length=70)
     url = models.CharField(max_length=200)
-    descript = models.CharField(max_length=70, null=True)
-    brand = models.CharField(max_length=70, null=True)
+    descript = models.CharField(max_length=70, blank=True)
+    brand = models.CharField(max_length=70, blank=True)
     email = models.ForeignKey(Account, on_delete=models.CASCADE)
 
 class OuterThin(models.Model):
@@ -16,8 +16,8 @@ class OuterThin(models.Model):
     color = models.CharField(max_length=70)
     subcategory = models.CharField(max_length=70)
     url = models.CharField(max_length=200)
-    descript = models.CharField(max_length=70,  null=True)
-    brand = models.CharField(max_length=70, null=True)
+    descript = models.CharField(max_length=70,  blank=True)
+    brand = models.CharField(max_length=70, blank=True)
     email = models.ForeignKey(Account, on_delete=models.CASCADE)
 
 class TopLong(models.Model):
@@ -25,8 +25,8 @@ class TopLong(models.Model):
     color = models.CharField(max_length=70)
     subcategory = models.CharField(max_length=70)
     url = models.CharField(max_length=200)
-    descript = models.CharField(max_length=70, null=True)
-    brand = models.CharField(max_length=70, null=True)
+    descript = models.CharField(max_length=70, blank=True)
+    brand = models.CharField(max_length=70, blank=True)
     email = models.ForeignKey(Account, on_delete=models.CASCADE)
 
 class TopShort(models.Model):
@@ -34,8 +34,8 @@ class TopShort(models.Model):
     color = models.CharField(max_length=70)
     subcategory = models.CharField(max_length=70)
     url = models.CharField(max_length=200)
-    descript = models.CharField(max_length=70, null=True)
-    brand = models.CharField(max_length=70, null=True)
+    descript = models.CharField(max_length=70, blank=True)
+    brand = models.CharField(max_length=70, blank=True)
     email = models.ForeignKey(Account, on_delete=models.CASCADE)
 
 class BottomLong(models.Model):
@@ -43,8 +43,8 @@ class BottomLong(models.Model):
     color = models.CharField(max_length=70)
     subcategory = models.CharField(max_length=70)
     url = models.CharField(max_length=200)
-    descript = models.CharField(max_length=70, null=True)
-    brand = models.CharField(max_length=70, null=True)
+    descript = models.CharField(max_length=70, blank=True)
+    brand = models.CharField(max_length=70, blank=True)
     email = models.ForeignKey(Account, on_delete=models.CASCADE)
 
 class BottomShort(models.Model):
@@ -52,8 +52,8 @@ class BottomShort(models.Model):
     color = models.CharField(max_length=70)
     subcategory = models.CharField(max_length=70)
     url = models.CharField(max_length=200)
-    descript = models.CharField(max_length=70, null=True)
-    brand = models.CharField(max_length=70, null=True)
+    descript = models.CharField(max_length=70, blank=True)
+    brand = models.CharField(max_length=70, blank=True)
     email = models.ForeignKey(Account, on_delete=models.CASCADE)
 
 class Dress(models.Model):
@@ -61,8 +61,8 @@ class Dress(models.Model):
     color = models.CharField(max_length=70)
     subcategory = models.CharField(max_length=70)
     url = models.CharField(max_length=200)
-    descript = models.CharField(max_length=70, null=True)
-    brand = models.CharField(max_length=70, null=True)
+    descript = models.CharField(max_length=70, blank=True)
+    brand = models.CharField(max_length=70, blank=True)
     email = models.ForeignKey(Account, on_delete=models.CASCADE)
 
 # Create your models here.

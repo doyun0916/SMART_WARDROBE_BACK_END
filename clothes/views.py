@@ -5,7 +5,7 @@ from rest_framework.parsers import JSONParser
 from rest_framework import status
 
 from clothes.models import OuterThick, OuterThin, TopLong, TopShort, BottomLong, BottomShort, Dress
-from clothes.serializers import OuterThickSerializer, OuterThinSerializer, TopLongSerializer, TopShortSerializer, BottomLongSerializer, BottomShortSerializer, DressSerializer
+from clothes.serializers import Item, OuterThickSerializer, OuterThinSerializer, TopLongSerializer, TopShortSerializer, BottomLongSerializer, BottomShortSerializer, DressSerializer
 from restApi.models import Token, Account
 from rest_framework.decorators import api_view
 from rest_framework.renderers import JSONRenderer
@@ -19,12 +19,13 @@ tlong = ['long blouse', 'long shirt', 'long tee', 'hoodie', 'sweater', 'turtlene
 bshort = ['short skirt', 'denim shorts', 'shorts']
 delcheck = ['token', 'id', 'category', 'subcategory']
 upcheck = ['token', 'id', 'name', 'brand', 'color', 'url', 'category', 'subcategory', 'categoryNew', 'subcategoryNew', 'descript']
-insertcheck = ['token', ]
+insertcheck = ['name', 'color', 'subcategory', 'category', 'url' ]
 
 @api_view(['POST'])
 def item_insert(request):
     item_info = JSONParser().parse(request)
     comment = {}
+    item = {}
     if "token" not in item_info:
         comment['token'] = ["This field is required."]
         return JsonResponse({'status': 'false', 'message': comment}, status=status.HTTP_400_BAD_REQUEST)
@@ -35,6 +36,11 @@ def item_insert(request):
             return JsonResponse({'status':'false', 'message': comment}, status=status.HTTP_400_BAD_REQUEST)
     item_info['email'] = item_info.pop('token')
     item_info['email'] = session.email
+
+    for i in range(len(insertcheck)):
+        if insertcheck[i] not in item_info:
+            comment[insertcheck[i]] = ["This field is required"]
+            return JsonResponse({'status':'false', 'message': comment}, status=status.HTTP_400_BAD_REQUEST)
     check = OuterThickSerializer(data=item_info)
     if check.is_valid():
         if item_info['category'] == 'outer':
@@ -42,14 +48,18 @@ def item_insert(request):
                 othick_serializer = OuterThickSerializer(data=item_info)
                 if othick_serializer.is_valid():
                     othick_serializer.save()
-                    return JsonResponse({'status': 'true'})
+                    item = OuterThick.objects.get(url=item_info['url'])
+                    itemSe = Item(item)
+                    return JsonResponse({'status': 'true', 'item': itemSe.data})
                 else:
                     return JsonResponse({'status': 'false', 'message': othick_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
             else:
                 othin_serializer = OuterThinSerializer(data=item_info)
                 if othin_serializer.is_valid():
                     othin_serializer.save()
-                    return JsonResponse({'status': 'true'})
+                    item = OuterThin.objects.get(url=item_info['url'])
+                    itemSe = Item(item)
+                    return JsonResponse({'status': 'true', 'item': itemSe.data})
                 else:
                     return JsonResponse({'status': 'false', 'message': othin_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -59,14 +69,18 @@ def item_insert(request):
                 tlong_serializer = TopLongSerializer(data=item_info)
                 if tlong_serializer.is_valid():
                     tlong_serializer.save()
-                    return JsonResponse({'status': 'true'})
+                    item = TopLong.objects.get(url=item_info['url'])
+                    itemSe = Item(item)
+                    return JsonResponse({'status': 'true', 'item': itemSe.data})
                 else:
                     return JsonResponse({'status': 'false', 'message': tlong_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
             else:
                 tshort_serializer = TopShortSerializer(data=item_info)
                 if tshort_serializer.is_valid():
                     tshort_serializer.save()
-                    return JsonResponse({'status': 'true'})
+                    item = TopShort.objects.get(url=item_info['url'])
+                    itemSe = Item(item)
+                    return JsonResponse({'status': 'true', 'item': itemSe.data})
                 else:
                     return JsonResponse({'status': 'false', 'message': tshort_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -76,14 +90,18 @@ def item_insert(request):
                 bshort_serializer = BottomShortSerializer(data=item_info)
                 if bshort_serializer.is_valid():
                     bshort_serializer.save()
-                    return JsonResponse({'status': 'true'})
+                    item = BottomShort.objects.get(url=item_info['url'])
+                    itemSe = Item(item)
+                    return JsonResponse({'status': 'true', 'item': itemSe.data})
                 else:
                     return JsonResponse({'status': 'false', 'message': bshort_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
             else:
                 blong_serializer = BottomLongSerializer(data=item_info)
                 if blong_serializer.is_valid():
                     blong_serializer.save()
-                    return JsonResponse({'status': 'true'})
+                    item = BottomLong.objects.get(url=item_info['url'])
+                    itemSe = Item(item)
+                    return JsonResponse({'status': 'true', 'item': itemSe.data})
                 else:
                     return JsonResponse({'status': 'false', 'message': blong_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
         
@@ -91,7 +109,9 @@ def item_insert(request):
             dress_serializer = DressSerializer(data=item_info)
             if dress_serializer.is_valid():
                 dress_serializer.save()
-                return JsonResponse({'status': 'true'})
+                item = Dress.objects.get(url=item_info['url'])
+                itemSe = Item(item)
+                return JsonResponse({'status': 'true', 'item': itemSe.data})
             else:
                 return JsonResponse({'status': 'false', 'message': dress_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
     else:
