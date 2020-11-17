@@ -7,5 +7,7 @@ urlpatterns = [
     url(r'^clothes/update', views.item_update),
     url(r'^clothes/del', views.item_delete),
     url(r'^clothes/allinfo', views.item_get_all),
+    url(r'^clothes/like', views.item_like),
+    url(r'^clothes/infolike', views.item_get_like),
 ]
 

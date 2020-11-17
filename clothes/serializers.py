@@ -10,6 +10,7 @@ class Item(serializers.ModelSerializer):
                   'subcategory',
                   'url',
                   'descript',
+                  'like',
                   'brand'
                   )
 class OuterThickSerializer(serializers.ModelSerializer):
@@ -22,6 +23,7 @@ class OuterThickSerializer(serializers.ModelSerializer):
                   'url',
                   'descript',
                   'brand',
+                  'like',
                   'email')
 
 class OuterThinSerializer(serializers.ModelSerializer):
@@ -34,6 +36,7 @@ class OuterThinSerializer(serializers.ModelSerializer):
                   'url',
                   'descript',
                   'brand',
+                  'like',
                   'email')
 
 class TopLongSerializer(serializers.ModelSerializer):
@@ -46,6 +49,7 @@ class TopLongSerializer(serializers.ModelSerializer):
                   'url',
                   'descript',
                   'brand',
+                  'like',
                   'email')
 
 class TopShortSerializer(serializers.ModelSerializer):
@@ -58,6 +62,7 @@ class TopShortSerializer(serializers.ModelSerializer):
                   'url',
                   'descript',
                   'brand',
+                  'like',
                   'email')
 
 class BottomLongSerializer(serializers.ModelSerializer):
@@ -70,6 +75,7 @@ class BottomLongSerializer(serializers.ModelSerializer):
                   'url',
                   'descript',
                   'brand',
+                  'like',
                   'email')
 
 class BottomShortSerializer(serializers.ModelSerializer):
@@ -82,6 +88,7 @@ class BottomShortSerializer(serializers.ModelSerializer):
                   'url',
                   'descript',
                   'brand',
+                  'like',
                   'email')
 
 class DressSerializer(serializers.ModelSerializer):
@@ -94,5 +101,6 @@ class DressSerializer(serializers.ModelSerializer):
                   'url',
                   'descript',
                   'brand',
+                  'like',
                   'email')
 
