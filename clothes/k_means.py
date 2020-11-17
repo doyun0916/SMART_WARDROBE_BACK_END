@@ -48,8 +48,10 @@ lightjean = [(177, 195, 208), (149, 161, 178), (191, 216, 230), (103, 125, 144)]
 colorset = (
     white, lightgray, darkgray, black, red, pink, orange, mustard, yellow, mint, green, olive, navy, blue, purple,
     beige, brown)
+jeanset = (darkjean, jean, lightjean)
 colorsname = ['white', 'lightgray', 'darkgray', 'black', 'red', 'pink', 'orange', 'mustard', 'yellow', 'mint', 'green',
               'olive', 'navy', 'blue', 'purple', 'beige', 'brown']
+jeansname = ['darkjean', 'jean', 'lightjean']
 
 def calc_distance(a):  # 거리값을 계산하고 그 값을 저장하는 역할
     dis_list = list()
