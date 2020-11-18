@@ -12,6 +12,7 @@ from rest_framework.renderers import JSONRenderer
 
 from django.conf import settings
 from django.utils import timezone
+import json
 
 
 othick = ['coat', 'coat fur', 'parka']
@@ -201,43 +202,43 @@ def item_get_like(request):
         comment['token'] = ["user not present"]
         return JsonResponse({'status':'false', 'message': comment}, status=status.HTTP_400_BAD_REQUEST)
 
-    outerthickdb = OuterThick.objects.filter(email=session.email, like="true")
+    outerthickdb = OuterThick.objects.filter(email=session.email, like=True)
     othick = Item(outerthickdb, many=True)
     for i in range(len(othick.data)):
         othick.data[i]['category'] = "outer"
         result.append(othick.data[i])
 
-    outerthindb = OuterThin.objects.filter(email=session.email, like="true")
+    outerthindb = OuterThin.objects.filter(email=session.email, like=True)
     othin = Item(outerthindb, many=True)
     for i in range(len(othin.data)):
         othin.data[i]['category'] = "outer"
         result.append(othin.data[i])
 
-    toplongdb = TopLong.objects.filter(email=session.email, like="true")
+    toplongdb = TopLong.objects.filter(email=session.email, like=True)
     tlong = Item(toplongdb, many=True)
     for i in range(len(tlong.data)):
         tlong.data[i]['category'] = "top"
         result.append(tlong.data[i])
 
-    topshortdb = TopShort.objects.filter(email=session.email, like="true")
+    topshortdb = TopShort.objects.filter(email=session.email, like=True)
     tshort = Item(topshortdb, many=True)
     for i in range(len(tshort.data)):
         tshort.data[i]['category'] = "top"
         result.append(tshort.data[i])
 
-    bottomlongdb = BottomLong.objects.filter(email=session.email, like="true")
+    bottomlongdb = BottomLong.objects.filter(email=session.email, like=True)
     blong = Item(bottomlongdb, many=True)
     for i in range(len(blong.data)):
         blong.data[i]['category'] = "bottom"
         result.append(blong.data[i])
 
-    bottomshortdb = BottomShort.objects.filter(email=session.email, like="true")
+    bottomshortdb = BottomShort.objects.filter(email=session.email, like=True)
     bshort = Item(bottomshortdb, many=True)
     for i in range(len(bshort.data)):
         bshort.data[i]['category'] = "bottom"
         result.append(bshort.data[i])
 
-    dressdb = Dress.objects.filter(email=session.email, like="true")
+    dressdb = Dress.objects.filter(email=session.email, like=True)
     dre = Item(dressdb, many=True)
     for i in range(len(dre.data)):
         dre.data[i]['category'] = "onepiece"
@@ -751,10 +752,10 @@ def item_like(request):
             except OuterThick.DoesNotExist:
                 comment['id'] = ["item not present"]
                 return JsonResponse({'status':'false', 'message': comment}, status=status.HTTP_400_BAD_REQUEST)
-            if items.like == "false":
-                items.like = "true"
+            if items.like == False:
+                items.like = True
             else:
-                items.like = "false"
+                items.like = False
             items.save()
             itemSe = Item(items)
             return JsonResponse({'status': 'true', 'item': itemSe.data})
@@ -764,10 +765,10 @@ def item_like(request):
             except OuterThin.DoesNotExist:
                 comment['id'] = ["item not present"]
                 return JsonResponse({'status':'false', 'message': comment}, status=status.HTTP_400_BAD_REQUEST)
-            if items.like == "false":
-                items.like = "true"
+            if items.like == False:
+                items.like = True
             else:
-                items.like = "false"
+                items.like = False
             items.save()
             itemSe = Item(items)
             return JsonResponse({'status': 'true', 'item': itemSe.data})
@@ -780,10 +781,10 @@ def item_like(request):
             except TopLong.DoesNotExist:
                 comment['id'] = ["item not present"]
                 return JsonResponse({'status':'false', 'message': comment}, status=status.HTTP_400_BAD_REQUEST)
-            if items.like == "false":
-                items.like = "true"
+            if items.like == False:
+                items.like = True
             else:
-                items.like = "false"
+                items.like = False
             items.save()
             itemSe = Item(items)
             return JsonResponse({'status': 'true', 'item': itemSe.data})
@@ -793,10 +794,10 @@ def item_like(request):
             except TopShort.DoesNotExist:
                 comment['id'] = ["item not present"]
                 return JsonResponse({'status':'false', 'message': comment}, status=status.HTTP_400_BAD_REQUEST)
-            if items.like == "false":
-                items.like = "true"
+            if items.like == False:
+                items.like = True
             else:
-                items.like = "false"
+                items.like = False
             items.save()
             itemSe = Item(items)
             return JsonResponse({'status': 'true', 'item': itemSe.data})
@@ -808,10 +809,10 @@ def item_like(request):
             except BottomShort.DoesNotExist:
                 comment['id'] = ["item not present"]
                 return JsonResponse({'status':'false', 'message': comment}, status=status.HTTP_400_BAD_REQUEST)
-            if items.like == "false":
-                items.like = "true"
+            if items.like == False:
+                items.like = True
             else:
-                items.like = "false"
+                items.like = False
             items.save()
             itemSe = Item(items)
             return JsonResponse({'status': 'true', 'item': itemSe.data})
@@ -821,10 +822,10 @@ def item_like(request):
             except BottomLong.DoesNotExist:
                 comment['id'] = ["item not present"]
                 return JsonResponse({'status':'false', 'message': comment}, status=status.HTTP_400_BAD_REQUEST)
-            if items.like == "false":
-                items.like = "true"
+            if items.like == False:
+                items.like = True
             else:
-                items.like = "false"
+                items.like = False
             items.save()
             itemSe = Item(items)
             return JsonResponse({'status': 'true', 'item': itemSe.data})
@@ -835,10 +836,10 @@ def item_like(request):
         except Dress.DoesNotExist:
             comment['id'] = ["item not present"]
             return JsonResponse({'status':'false', 'message': comment}, status=status.HTTP_400_BAD_REQUEST)
-        if items.like == "false":
-            items.like = "true"
+        if items.like == False:
+            items.like = True
         else:
-            items.like = "false"
+            items.like = False
         items.save()
         itemSe = Item(items)
         return JsonResponse({'status': 'true', 'item': itemSe.data})
