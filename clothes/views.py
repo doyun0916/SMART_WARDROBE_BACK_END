@@ -7,6 +7,7 @@ from rest_framework import status
 from clothes.models import OuterThick, OuterThin, TopLong, TopShort, BottomLong, BottomShort, Dress
 from clothes.serializers import Item, OuterThickSerializer, OuterThinSerializer, TopLongSerializer, TopShortSerializer, BottomLongSerializer, BottomShortSerializer, DressSerializer
 from restApi.models import Token, Account
+from coordi.views import get_like_image_all
 from rest_framework.decorators import api_view
 from rest_framework.renderers import JSONRenderer
 
@@ -23,7 +24,7 @@ blong = ['long skirt', 'jeans', 'sweatpants', 'chinos', 'leggings']
 bshort = ['short skirt', 'denim shorts', 'shorts']
 one = ['long dress', 'short dress', 'sling dress', 'vest dress', 'jumpsuit', 'romper']
 delcheck = ['token', 'id', 'category', 'subcategory']
-upcheck = ['token', 'id', 'name', 'brand', 'color', 'url', 'category', 'subcategory', 'categoryNew', 'subcategoryNew', 'descript']
+upcheck = ['token', 'id', 'name', 'color', 'url', 'category', 'subcategory', 'categoryNew', 'subcategoryNew']
 insertcheck = ['name', 'color', 'subcategory', 'category', 'url' ]
 
 @api_view(['POST'])
@@ -55,7 +56,9 @@ def item_insert(request):
                     othick_serializer.save()
                     item = OuterThick.objects.get(url=item_info['url'])
                     itemSe = Item(item)
-                    return JsonResponse({'status': 'true', 'item': itemSe.data})
+                    result={'category':"outer"}
+                    result.update(itemSe.data)
+                    return JsonResponse({'status': 'true', 'item': result})
                 else:
                     return JsonResponse({'status': 'false', 'message': othick_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
             elif item_info['subcategory'] in othin:
@@ -64,7 +67,9 @@ def item_insert(request):
                     othin_serializer.save()
                     item = OuterThin.objects.get(url=item_info['url'])
                     itemSe = Item(item)
-                    return JsonResponse({'status': 'true', 'item': itemSe.data})
+                    result={'category':"outer"}
+                    result.update(itemSe.data)
+                    return JsonResponse({'status': 'true', 'item': result})
                 else:
                     return JsonResponse({'status': 'false', 'message': othin_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
             else:
@@ -79,7 +84,9 @@ def item_insert(request):
                     tlong_serializer.save()
                     item = TopLong.objects.get(url=item_info['url'])
                     itemSe = Item(item)
-                    return JsonResponse({'status': 'true', 'item': itemSe.data})
+                    result={'category':"top"}
+                    result.update(itemSe.data)
+                    return JsonResponse({'status': 'true', 'item': result})
                 else:
                     return JsonResponse({'status': 'false', 'message': tlong_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
             elif item_info['subcategory'] in tshort:
@@ -88,7 +95,9 @@ def item_insert(request):
                     tshort_serializer.save()
                     item = TopShort.objects.get(url=item_info['url'])
                     itemSe = Item(item)
-                    return JsonResponse({'status': 'true', 'item': itemSe.data})
+                    result={'category':"top"}
+                    result.update(itemSe.data)
+                    return JsonResponse({'status': 'true', 'item': result})
                 else:
                     return JsonResponse({'status': 'false', 'message': tshort_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
             else:
@@ -102,7 +111,9 @@ def item_insert(request):
                     bshort_serializer.save()
                     item = BottomShort.objects.get(url=item_info['url'])
                     itemSe = Item(item)
-                    return JsonResponse({'status': 'true', 'item': itemSe.data})
+                    result={'category':"bottom"}
+                    result.update(itemSe.data)
+                    return JsonResponse({'status': 'true', 'item': result})
                 else:
                     return JsonResponse({'status': 'false', 'message': bshort_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
             elif item_info['subcategory'] in blong:
@@ -111,7 +122,9 @@ def item_insert(request):
                     blong_serializer.save()
                     item = BottomLong.objects.get(url=item_info['url'])
                     itemSe = Item(item)
-                    return JsonResponse({'status': 'true', 'item': itemSe.data})
+                    result={'category':"bottom"}
+                    result.update(itemSe.data)
+                    return JsonResponse({'status': 'true', 'item': result})
                 else:
                     return JsonResponse({'status': 'false', 'message': blong_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
             else:
@@ -125,7 +138,9 @@ def item_insert(request):
                     dress_serializer.save()
                     item = Dress.objects.get(url=item_info['url'])
                     itemSe = Item(item)
-                    return JsonResponse({'status': 'true', 'item': itemSe.data})
+                    result={'category':"onepiece"}
+                    result.update(itemSe.data)
+                    return JsonResponse({'status': 'true', 'item': result})
                 else:
                     return JsonResponse({'status': 'false', 'message': dress_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
             else:
@@ -192,7 +207,7 @@ def item_get(request):
     return JsonResponse({'status':'true', 'items': result}, safe=False)
 
 @api_view(['POST'])             # request = token, -------------> response = user's top, bottom, short seperation
-def item_get_like(request):
+def get_like(request):
     item_info = JSONParser().parse(request)
     result = []
     comment = {}
@@ -200,6 +215,11 @@ def item_get_like(request):
         session = Token.objects.get(token=item_info['token'])
     except Token.DoesNotExist:
         comment['token'] = ["user not present"]
+        return JsonResponse({'status':'false', 'message': comment}, status=status.HTTP_400_BAD_REQUEST)
+    try:
+        account = Account.objects.get(email=session.email)
+    except Account.DoesNotExist:
+        comment['email'] = ["email not present"]
         return JsonResponse({'status':'false', 'message': comment}, status=status.HTTP_400_BAD_REQUEST)
 
     outerthickdb = OuterThick.objects.filter(email=session.email, like=True)
@@ -244,7 +264,13 @@ def item_get_like(request):
         dre.data[i]['category'] = "onepiece"
         result.append(dre.data[i])
 
-    return JsonResponse({'status':'true', 'items': result}, safe=False)
+    coordiLike = get_like_image_all(account.sex, session.email)
+
+    if coordiLike==1:
+        comment['sex'] = ["Wrong sex"]
+        return JsonResponse({'status':'false', 'message': comment}, status=status.HTTP_400_BAD_REQUEST)
+    
+    return JsonResponse({'status':'true', 'items': result, 'coordi':coordiLike}, safe=False)
 
 
 
@@ -268,12 +294,16 @@ def item_update(request):
     
     def replace(x, y):
         x.name = y['name']
-        x.brand = y['brand']
+        if 'brand' in y:
+            x.brand = y['brand']
         x.color = y['color']
-        x.descript = y['descript']
+        if 'descript' in y:
+            x.descript = y['descript']
         x.save()
         itemSe = Item(x)
-        return JsonResponse({'status': 'true', 'item': itemSe.data}, status=status.HTTP_204_NO_CONTENT)
+        result={'category':y['category']}
+        result.update(itemSe.data)
+        return JsonResponse({'status': 'true', 'item': result})
 
     def outerinsert(x, sel, y):
         if x in sel:
@@ -282,7 +312,9 @@ def item_update(request):
                 othick_serializer.save()
                 item = OuterThick.objects.get(url=y['url'])
                 itemSe = Item(item)
-                return JsonResponse({'status': 'true', 'item': itemSe.data}, status=status.HTTP_204_NO_CONTENT)
+                result={'category':"outer"}
+                result.update(itemSe.data)
+                return JsonResponse({'status': 'true', 'item': result})
             else:
                 return JsonResponse({'status': 'false', 'message': othick_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
         else:
@@ -291,7 +323,9 @@ def item_update(request):
                 othin_serializer.save()
                 item = OuterThin.objects.get(url=y['url'])
                 itemSe = Item(item)
-                return JsonResponse({'status': 'true', 'item': itemSe.data}, status=status.HTTP_204_NO_CONTENT)
+                result={'category':"outer"}
+                result.update(itemSe.data)
+                return JsonResponse({'status': 'true', 'item': result})
             else:
                 return JsonResponse({'status': 'false', 'message': othin_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -302,7 +336,9 @@ def item_update(request):
                 tlong_serializer.save()
                 item = TopLong.objects.get(url=y['url'])
                 itemSe = Item(item)
-                return JsonResponse({'status': 'true', 'item': itemSe.data}, status=status.HTTP_204_NO_CONTENT)
+                result={'category':"top"}
+                result.update(itemSe.data)
+                return JsonResponse({'status': 'true', 'item': result})
             else:
                 return JsonResponse({'status': 'false', 'message': tlong_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
         else:
@@ -311,7 +347,9 @@ def item_update(request):
                 tshort_serializer.save()
                 item = TopShort.objects.get(url=y['url'])
                 itemSe = Item(item)
-                return JsonResponse({'status': 'true', 'item': itemSe.data}, status=status.HTTP_204_NO_CONTENT)
+                result={'category':"top"}
+                result.update(itemSe.data)
+                return JsonResponse({'status': 'true', 'item': result})
             else:
                 return JsonResponse({'status': 'false', 'message': tshort_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
     
@@ -322,7 +360,9 @@ def item_update(request):
                 bshort_serializer.save()
                 item = BottomShort.objects.get(url=y['url'])
                 itemSe = Item(item)
-                return JsonResponse({'status': 'true', 'item': itemSe.data}, status=status.HTTP_204_NO_CONTENT)
+                result={'category':"bottom"}
+                result.update(itemSe.data)
+                return JsonResponse({'status': 'true', 'item': result})
             else:
                 return JsonResponse({'status': 'false', 'message': bshort_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
         else:
@@ -331,7 +371,9 @@ def item_update(request):
                 blong_serializer.save()
                 item = BottomLong.objects.get(url=y['url'])
                 itemSe = Item(item)
-                return JsonResponse({'status': 'true', 'item': itemSe.data}, status=status.HTTP_204_NO_CONTENT)
+                result={'category':"bottom"}
+                result.update(itemSe.data)
+                return JsonResponse({'status': 'true', 'item': result})
             else:
                 return JsonResponse({'status': 'false', 'message': blong_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -341,7 +383,9 @@ def item_update(request):
             dress_serializer.save()
             item = Dress.objects.get(url=y['url'])
             itemSe = Item(item)
-            return JsonResponse({'status': 'true', 'item': itemSe.data}, status=status.HTTP_204_NO_CONTENT)
+            result={'category':"onepiece"}
+            result.update(itemSe.data)
+            return JsonResponse({'status': 'true', 'item': result})
         else:
             return JsonResponse({'status': 'false', 'message': dress_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -758,7 +802,9 @@ def item_like(request):
                 items.like = False
             items.save()
             itemSe = Item(items)
-            return JsonResponse({'status': 'true', 'item': itemSe.data})
+            result={'category':"outer"}
+            result.update(itemSe.data)
+            return JsonResponse({'status': 'true', 'item': result})
         else:
             try:
                 items = OuterThin.objects.get(id=item_info['id'], email=session.email)
@@ -771,7 +817,9 @@ def item_like(request):
                 items.like = False
             items.save()
             itemSe = Item(items)
-            return JsonResponse({'status': 'true', 'item': itemSe.data})
+            result={'category':"outer"}
+            result.update(itemSe.data)
+            return JsonResponse({'status': 'true', 'item': result})
 
 
     if item_info['category'] == 'top':
@@ -787,7 +835,9 @@ def item_like(request):
                 items.like = False
             items.save()
             itemSe = Item(items)
-            return JsonResponse({'status': 'true', 'item': itemSe.data})
+            result={'category':"top"}
+            result.update(itemSe.data)
+            return JsonResponse({'status': 'true', 'item': result})
         else:
             try:
                 items = TopShort.objects.get(id=item_info['id'], email=session.email)
@@ -800,7 +850,9 @@ def item_like(request):
                 items.like = False
             items.save()
             itemSe = Item(items)
-            return JsonResponse({'status': 'true', 'item': itemSe.data})
+            result={'category':"top"}
+            result.update(itemSe.data)
+            return JsonResponse({'status': 'true', 'item': result})
 
     if item_info['category'] == 'bottom':
         if item_info['subcategory'] in bshort:
@@ -815,7 +867,9 @@ def item_like(request):
                 items.like = False
             items.save()
             itemSe = Item(items)
-            return JsonResponse({'status': 'true', 'item': itemSe.data})
+            result={'category':"bottom"}
+            result.update(itemSe.data)
+            return JsonResponse({'status': 'true', 'item': result})
         else:
             try:
                 items = BottomLong.objects.get(id=item_info['id'], email=session.email)
@@ -828,7 +882,9 @@ def item_like(request):
                 items.like = False
             items.save()
             itemSe = Item(items)
-            return JsonResponse({'status': 'true', 'item': itemSe.data})
+            result={'category':"bottom"}
+            result.update(itemSe.data)
+            return JsonResponse({'status': 'true', 'item': result})
 
     if item_info['category'] == 'onepiece':
         try:
@@ -842,7 +898,9 @@ def item_like(request):
             items.like = False
         items.save()
         itemSe = Item(items)
-        return JsonResponse({'status': 'true', 'item': itemSe.data})
+        result={'category':"onepiece"}
+        result.update(itemSe.data)
+        return JsonResponse({'status': 'true', 'item': result})
 
 
 
