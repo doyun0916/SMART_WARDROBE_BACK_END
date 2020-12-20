@@ -226,42 +226,49 @@ def get_like(request):
     othick = Item(outerthickdb, many=True)
     for i in range(len(othick.data)):
         othick.data[i]['category'] = "outer"
+        othick.data[i]['type'] = "item"
         result.append(othick.data[i])
 
     outerthindb = OuterThin.objects.filter(email=session.email, like=True)
     othin = Item(outerthindb, many=True)
     for i in range(len(othin.data)):
         othin.data[i]['category'] = "outer"
+        othin.data[i]['type'] = "item"
         result.append(othin.data[i])
 
     toplongdb = TopLong.objects.filter(email=session.email, like=True)
     tlong = Item(toplongdb, many=True)
     for i in range(len(tlong.data)):
         tlong.data[i]['category'] = "top"
+        tlong.data[i]['type'] = "item"
         result.append(tlong.data[i])
 
     topshortdb = TopShort.objects.filter(email=session.email, like=True)
     tshort = Item(topshortdb, many=True)
     for i in range(len(tshort.data)):
         tshort.data[i]['category'] = "top"
+        tshort.data[i]['type'] = "item"
         result.append(tshort.data[i])
 
     bottomlongdb = BottomLong.objects.filter(email=session.email, like=True)
     blong = Item(bottomlongdb, many=True)
     for i in range(len(blong.data)):
         blong.data[i]['category'] = "bottom"
+        blong.data[i]['type'] = "item"
         result.append(blong.data[i])
 
     bottomshortdb = BottomShort.objects.filter(email=session.email, like=True)
     bshort = Item(bottomshortdb, many=True)
     for i in range(len(bshort.data)):
         bshort.data[i]['category'] = "bottom"
+        bshort.data[i]['type'] = "item"
         result.append(bshort.data[i])
 
     dressdb = Dress.objects.filter(email=session.email, like=True)
     dre = Item(dressdb, many=True)
     for i in range(len(dre.data)):
         dre.data[i]['category'] = "onepiece"
+        dre.data[i]['type'] = "item"
         result.append(dre.data[i])
 
     coordiLike = get_like_image_all(account.sex, session.email)
@@ -269,8 +276,10 @@ def get_like(request):
     if coordiLike==1:
         comment['sex'] = ["Wrong sex"]
         return JsonResponse({'status':'false', 'message': comment}, status=status.HTTP_400_BAD_REQUEST)
-    
-    return JsonResponse({'status':'true', 'items': result, 'coordi':coordiLike}, safe=False)
+    else:
+        for j in range(len(coordiLike)):
+            result.append(coordiLike[j])
+    return JsonResponse({'status':'true', 'like': result}, safe=False)
 
 
 

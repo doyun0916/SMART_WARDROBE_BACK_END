@@ -139,7 +139,7 @@ def coordination(request):
                     final_dict['likeImage']=like_check(style['id'], stylelike)
                     final_dict['itemList']=myclothes_list
                     final_list.append(final_dict)
-                    if len(final_list)==5:
+                    if len(final_list)==2:
                         break
             for style in style_set2:
                 no_count=0
@@ -181,7 +181,7 @@ def coordination(request):
                     final_dict['likeImage']=like_check(style['id'], stylelike)
                     final_dict['itemList']=myclothes_list
                     final_list.append(final_dict)
-                    if len(final_list)==10:
+                    if len(final_list)==4:
                         break
             for style in style_set3:
                 no_count=0
@@ -211,10 +211,9 @@ def coordination(request):
                     final_dict['likeImage']=like_check(style['id'], stylelike)
                     final_dict['itemList']=myclothes_list
                     final_list.append(final_dict)
-                    if len(final_list)==15:
+                    if len(final_list)==5:
                         break
-            random.shuffle(final_list)
-            return JsonResponse(final_list[0:5],safe=False)
+            return JsonResponse(final_list,safe=False)
         elif temperature < 20 and temperature >= 17:
             style_set = obj.objects.filter(outer='',top__in=tlong,bottom__in=blong,dress='').order_by("?").values()
             for style in style_set:
@@ -259,8 +258,7 @@ def coordination(request):
                     final_list.append(final_dict)
                     if len(final_list)==5:
                         break
-            random.shuffle(final_list)
-            return JsonResponse(final_list[0:5],safe=False)
+            return JsonResponse(final_list,safe=False)
             """
             for i in range(1):
                 final_dict={}
@@ -341,7 +339,7 @@ def coordination(request):
                     final_dict['likeImage']=like_check(style['id'], stylelike)
                     final_dict['itemList']=myclothes_list
                     final_list.append(final_dict)
-                    if len(final_list)==5:
+                    if len(final_list)==2:
                         break
             for style in style_set2:
                 no_count=0
@@ -383,10 +381,9 @@ def coordination(request):
                     final_dict['likeImage']=like_check(style['id'], stylelike)
                     final_dict['itemList']=myclothes_list
                     final_list.append(final_dict)
-                    if len(final_list)==10:
+                    if len(final_list)==5:
                         break
-            random.shuffle(final_list)
-            return JsonResponse(final_list[0:5],safe=False)
+            return JsonResponse(final_list,safe=False)
         elif temperature < 12 and temperature >= 9:
             style_set = obj.objects.filter(outer__in=othin,top__in=tlong,bottom__in=blong,dress='').order_by("?").values()
             for style in style_set:
@@ -887,202 +884,46 @@ def coordination_get_like(request):
         return JsonResponse({'status':'false', 'message': comment}, status=status.HTTP_400_BAD_REQUEST)
 
 def get_like_image_all(sex, e):
-    res = []
-    def get_like_image(obj, stylelike, s):
+    url_list = []
+    def get_like_image(obj, stylelike):
         images=stylelike.objects.filter(email=e).values()
         for image in images:
             image_set=obj.objects.filter(id=image['num']).values()
             # o=objsrlz(image_set,many=True)
             if image_set:
-                coordi_info = {}
-                coordi_info['url'] = image_set[0]['url']
-                coordi_info['id'] = image_set[0]['id']
-                coordi_info['style'] = s
-                coordi_info['type'] = "coordi"
-                res.append(coordi_info)
-
+                url_list.append(image_set[0]['url'])
 
     if sex == 'male':
-        get_like_image(Mcampus,Mcampuslike, "campus")
-        get_like_image(Mcasual,Mcasuallike, "casual")
-        get_like_image(Mdandy,Mdandylike, "dandy")
-        get_like_image(Mformal,Mformallike, "formal")
-        get_like_image(Mminimal,Mminimallike, "minimal")
-        get_like_image(Msports,Msportslike, "sports")
-        get_like_image(Mstreet,Mstreetlike, "street")
-        get_like_image(Mtravel,Mtravellike, "travel")
-        get_like_image(Munique,Muniquelike, "unique")
-        get_like_image(Mworkwear,Mworkwearlike, "workwear")
-        if not res:
-            res.append('no image')
-        return res
+        get_like_image(Mcampus,Mcampuslike)
+        get_like_image(Mcasual,Mcasuallike)
+        get_like_image(Mdandy,Mdandylike)
+        get_like_image(Mformal,Mformallike)
+        get_like_image(Mminimal,Mminimallike)
+        get_like_image(Msports,Msportslike)
+        get_like_image(Mstreet,Mstreetlike)
+        get_like_image(Mtravel,Mtravellike)
+        get_like_image(Munique,Muniquelike)
+        get_like_image(Mworkwear,Mworkwearlike)
+        if not url_list:
+            url_list.append('no image')
+        return url_list
     elif sex == 'female':
-        get_like_image(Wcampus,Wcampuslike, "campus")
-        get_like_image(Wcasual,Wcasuallike, "casual")
-        get_like_image(Wdandy,Wdandylike, "dandy")
-        get_like_image(Wformal,Wformallike, "formal")
-        get_like_image(Wminimal,Wminimallike, "minimal")
-        get_like_image(Wsports,Wsportslike, "sports")
-        get_like_image(Wstreet,Wstreetlike, "street")
-        get_like_image(Wtravel,Wtravellike, "travel")
-        get_like_image(Wunique,Wuniquelike, "unique")
-        get_like_image(Wworkwear,Wworkwearlike, "workwear")
-        get_like_image(Wgirlish,Wgirlishlike, "girlish")
-        get_like_image(Wfeminine,Wfemininelike, "feminine")
-        get_like_image(Wromantic,Wromanticlike, "romantic")
-        if not res:
-            res.append('no image')
-        return res
+        get_like_image(Wcampus,Wcampuslike)
+        get_like_image(Wcasual,Wcasuallike)
+        get_like_image(Wdandy,Wdandylike)
+        get_like_image(Wformal,Wformallike)
+        get_like_image(Wminimal,Wminimallike)
+        get_like_image(Wsports,Wsportslike)
+        get_like_image(Wstreet,Wstreetlike)
+        get_like_image(Wtravel,Wtravellike)
+        get_like_image(Wunique,Wuniquelike)
+        get_like_image(Wworkwear,Wworkwearlike)
+        get_like_image(Wgirlish,Wgirlishlike)
+        get_like_image(Wfeminine,Wfemininelike)
+        get_like_image(Wromantic,Wromanticlike)
+        if not url_list:
+            url_list.append('no image')
+        return url_list
     else:
         return 1
-
-
-@api_view(['POST'])
-def func_temp(request):
-    user_info = JSONParser().parse(request)
-    comment = {}
-    if "token" not in user_info:
-        comment['token'] = ["This field is required."]
-        return JsonResponse({'status': 'false', 'message': comment}, status=status.HTTP_400_BAD_REQUEST)
-    try:
-        session = Token.objects.get(token=user_info['token'])
-    except Token.DoesNotExist:
-            comment['token'] = ["user not present"]
-            return JsonResponse({'status':'false', 'message': comment}, status=status.HTTP_400_BAD_REQUEST)
-    account = Account.objects.get(email=session.email)
-    sex = account.sex
-    final_dict={}
-
-    def func_temp2(obj, coordi_url):
-        outer_list=[]
-        top_list=[]
-        bottom_list=[]
-        dress_list=[]
-        style=obj.objects.filter(url=coordi_url).values()
-        if style:
-            if style[0]['outer'] in othick:
-                o_list=OuterThick.objects.filter(email=session.email, color=style[0]['outercol'], subcategory=style[0]['outer'])
-                if not o_list:
-                    o_list=OuterThick.objects.filter(email=session.email, color=style[0]['outercol'])
-                    if not o_list:
-                        outer_list.append('There is no outer recommended')
-                o=OuterThinSerializer(o_list,many=True)
-                if o.data:
-                    for clothes in o.data:
-                        clothes['category']='outer'
-                outer_list+=o.data
-                final_dict['outer']=outer_list
-            elif style[0]['outer'] in othin:
-                o_list=OuterThin.objects.filter(email=session.email, color=style[0]['outercol'], subcategory=style[0]['outer'])
-                if not o_list:
-                    o_list=OuterThin.objects.filter(email=session.email, color=style[0]['outercol'])
-                    if not o_list:
-                        outer_list.append('There is no outer recommended')
-                o=OuterThinSerializer(o_list,many=True)
-                if o.data:
-                    for clothes in o.data:
-                        clothes['category']='outer'
-                outer_list+=o.data
-                final_dict['outer']=outer_list
-            if style[0]['top'] in tlong:
-                t_list=TopLong.objects.filter(email=session.email, color=style[0]['topcol'], subcategory=style[0]['top'])
-                if not t_list:
-                    t_list=TopLong.objects.filter(email=session.email, color=style[0]['topcol'])
-                    if not t_list:
-                        top_list.append('There is no top recommended')
-                t=TopLongSerializer(t_list,many=True)
-                if t.data:
-                    for clothes in t.data:
-                        clothes['category']='top'
-                top_list+=t.data
-                final_dict['top']=top_list
-            elif style[0]['top'] in tshort:
-                t_list=TopShort.objects.filter(email=session.email, color=style[0]['topcol'], subcategory=style[0]['top'])
-                if not t_list:
-                    t_list=TopShort.objects.filter(email=session.email, color=style[0]['topcol'])
-                    if not t_list:
-                        top_list.append('There is no top recommended')
-                t=TopShortSerializer(t_list,many=True)
-                if t.data:
-                    for clothes in t.data:
-                        clothes['category']='top'
-                top_list+=t.data
-                final_dict['top']=top_list
-            if style[0]['bottom'] in blong:
-                b_list=BottomLong.objects.filter(email=session.email, color=style[0]['bottomcol'], subcategory=style[0]['bottom'])
-                if not b_list:
-                    b_list=BottomLong.objects.filter(email=session.email, color=style[0]['bottomcol'])
-                    if not b_list:
-                        bottom_list.append('There is no bottom recommended')
-                b=BottomLongSerializer(b_list,many=True)
-                if b.data:
-                    for clothes in b.data:
-                        clothes['category']='bottom'
-                bottom_list+=b.data
-                final_dict['bottom']=bottom_list
-            elif style[0]['bottom'] in bshort:
-                b_list=BottomShort.objects.filter(email=session.email, color=style[0]['bottomcol'], subcategory=style[0]['bottom'])
-                if not b_list:
-                    b_list=BottomShort.objects.filter(email=session.email, color=style[0]['bottomcol'])
-                    if not b_list:
-                        bottom_list.append('There is no bottom recommended')
-                b=BottomShortSerializer(b_list,many=True)
-                if b.data:
-                    for clothes in b.data:
-                        clothes['category']='bottom'
-                bottom_list+=b.data
-                final_dict['bottom']=bottom_list
-            if style[0]['dress'] in onepiece:
-                d_list=Dress.objects.filter(email=session.email, color=style[0]['dresscol'], subcategory=style[0]['dress'])
-                if not d_list:
-                    d_list=Dress.objects.filter(email=session.email, color=style[0]['dresscol'])
-                    if not d_list:
-                        dress_list.append('There is no onepiece recommended')
-                d=DressSerializer(d_list,many=True)
-                if d.data:
-                    for clothes in d.data:
-                        clothes['category']='onepiece'
-                dress_list+=d.data
-                final_dict['onepiece']=dress_list
-            return JsonResponse(final_dict)
-
-    if sex == 'male':
-        func_temp2(Mcampus,user_info['url'])
-        func_temp2(Mcasual,user_info['url'])
-        func_temp2(Mdandy,user_info['url'])
-        func_temp2(Mformal,user_info['url'])
-        func_temp2(Mminimal,user_info['url'])
-        func_temp2(Msports,user_info['url'])
-        func_temp2(Mstreet,user_info['url'])
-        func_temp2(Mtravel,user_info['url'])
-        func_temp2(Munique,user_info['url'])
-        func_temp2(Mworkwear,user_info['url'])
-        if not final_dict:
-            comment['url'] = ["Wrong url"]
-            return JsonResponse({'status':'false', 'message': comment}, status=status.HTTP_400_BAD_REQUEST)
-        else:
-            return JsonResponse(final_dict)
-
-    elif sex == 'female':
-        func_temp2(Wcampus,user_info['url'])
-        func_temp2(Wcasual,user_info['url'])
-        func_temp2(Wdandy,user_info['url'])
-        func_temp2(Wformal,user_info['url'])
-        func_temp2(Wminimal,user_info['url'])
-        func_temp2(Wsports,user_info['url'])
-        func_temp2(Wstreet,user_info['url'])
-        func_temp2(Wtravel,user_info['url'])
-        func_temp2(Wunique,user_info['url'])
-        func_temp2(Wworkwear,user_info['url'])
-        func_temp2(Wgirlish,user_info['url'])
-        func_temp2(Wfeminine,user_info['url'])
-        func_temp2(Wromantic,user_info['url'])
-        if not final_dict:
-            comment['url'] = ["Wrong url"]
-            return JsonResponse({'status':'false', 'message': comment}, status=status.HTTP_400_BAD_REQUEST)
-        else:
-            return JsonResponse(final_dict)
-    else:
-        comment['sex'] = ["Wrong sex"]
-        return JsonResponse({'status':'false', 'message': comment}, status=status.HTTP_400_BAD_REQUEST)
 
