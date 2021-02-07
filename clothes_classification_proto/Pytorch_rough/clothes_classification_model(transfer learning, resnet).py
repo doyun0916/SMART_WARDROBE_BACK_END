@@ -46,25 +46,7 @@ def main():
 
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
-    def imshow(inp, title=None):
-        """Imshow for Tensor."""
-        inp = inp.numpy().transpose((1, 2, 0))
-        mean = np.array([0.485, 0.456, 0.406])
-        std = np.array([0.229, 0.224, 0.225])
-        inp = std * inp + mean
-        inp = np.clip(inp, 0, 1)
-        plt.imshow(inp)
-        if title is not None:
-            plt.title(title)
-        plt.pause(0.001)  # pause a bit so that plots are updated
-
-    # Get a batch of training data
     inputs, classes = next(iter(dataloaders['train']))
-
-    # Make a grid from batch
-    out = torchvision.utils.make_grid(inputs)
-
-    imshow(out, title=[class_names[x] for x in classes])
 
     def train_model(model, criterion, optimizer, scheduler, num_epochs=25):
         since = time.time()
@@ -76,7 +58,6 @@ def main():
             print('Epoch {}/{}'.format(epoch, num_epochs - 1))
             print('-' * 10)
 
-            # Each epoch has a training and validation phase
             for phase in ['train', 'val']:
                 if phase == 'train':
                     model.train()  # Set model to training mode
@@ -134,36 +115,9 @@ def main():
         model.load_state_dict(best_model_wts)
         return model
 
-    def visualize_model(model, num_images=6):
-        was_training = model.training
-        model.eval()
-        images_so_far = 0
-        fig = plt.figure()
-
-        with torch.no_grad():
-            for i, (inputs, labels) in enumerate(dataloaders['val']):
-                inputs = inputs.to(device)
-                labels = labels.to(device)
-
-                outputs = model(inputs)
-                _, preds = torch.max(outputs, 1)
-
-                for j in range(inputs.size()[0]):
-                    images_so_far += 1
-                    ax = plt.subplot(num_images // 2, 2, images_so_far)
-                    ax.axis('off')
-                    ax.set_title('predicted: {}'.format(class_names[preds[j]]))
-                    imshow(inputs.cpu().data[j])
-
-                    if images_so_far == num_images:
-                        model.train(mode=was_training)
-                        return
-            model.train(mode=was_training)
-
     model_ft = models.resnext101_32x8d(pretrained=True)
     num_ftrs = model_ft.fc.in_features
-    # Here the size of each output sample is set to 2.
-    # Alternatively, it can be generalized to nn.Linear(num_ftrs, len(class_names)).
+
     model_ft.fc = nn.Linear(num_ftrs, 3)
 
     model_ft = model_ft.to(device)
